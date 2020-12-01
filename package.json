@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "set NODE_ENV=tests&& mocha ./tests/* --exit",
-    "start": "node src/index.js",
+    "start": "nodemon src/index.js",
     "nodemon": "set NODE_ENV=dev&& nodemon src/index.js"
   },
   "repository": {
