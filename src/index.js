@@ -14,7 +14,7 @@ app.get("/", function (req, res) {
 });
 
 app.listen(process.env.PORT || 5000, () => {
-    //console.log("Server is running!")
+    if(process.env.NODE_ENV === "dev") console.log("Server is running!")
 });
 
 module.exports = app

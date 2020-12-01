@@ -2,8 +2,6 @@ const app = require("../src");
 const Citizen = require("../models/citizen")
 require('dotenv').config()
 
-process.env.NODE_ENV = "tests"
-
 const chai = require("chai");
 const chaiHttp = require("chai-http")
 const expect = chai.expect;

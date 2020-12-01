@@ -4,9 +4,9 @@
   "description": "Backend for PFE IPL 2020 Group 6",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha ./tests/* --exit",
-    "start": "node src/index.js",
-    "nodemon": "nodemon src/index.js"
+    "test": "set NODE_ENV=tests&& mocha ./tests/* --exit",
+    "start": "set NODE_ENV=dev&& node src/index.js",
+    "nodemon": "set NODE_ENV=dev&& nodemon src/index.js"
   },
   "repository": {
     "type": "git",
