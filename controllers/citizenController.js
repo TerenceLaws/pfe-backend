@@ -8,6 +8,7 @@ exports.citizen_list = function (req, res){
     Citizen.find({}).then(result => {
         return res.json(result)
     })
+    // TODO: catch
 }
 
 /*
