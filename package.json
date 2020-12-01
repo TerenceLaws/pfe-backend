@@ -2,11 +2,11 @@
   "name": "pfe-backend",
   "version": "1.0.0",
   "description": "Backend for PFE IPL 2020 Group 6",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha ./tests/* --exit",
-    "start": "node index.js",
-    "nodemon": "nodemon index.js"
+    "start": "node src/index.js",
+    "nodemon": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,10 +19,16 @@
   },
   "homepage": "https://github.com/marco-verbeek/pfe-backend#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.18",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "mocha": "^8.2.1",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.6",
     "supertest": "^6.0.1"
   }
