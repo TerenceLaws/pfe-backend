@@ -8,4 +8,6 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/pfe", { u
         console.log('Error connecting to MongoDB: ', error.message)
     })
 
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 module.exports = mongoose;
