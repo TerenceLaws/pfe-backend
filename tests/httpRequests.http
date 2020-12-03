@@ -1,0 +1,40 @@
+### Login => Not in db
+POST localhost:5000/facilities/login
+content-Type: application/json
+
+{
+  "mail": "notInDb",
+  "password": "azerty1."
+}
+
+### Get all facilities
+GET localhost:5000/facilities
+
+### Login => In db wrong password
+POST localhost:5000/facilities/login
+content-Type: application/json
+
+{
+  "mail": "jess@mail.com",
+  "password": "AZERty1."
+}
+
+### Login => In db correct password
+POST localhost:5000/facilities/login
+content-Type: application/json
+
+{
+  "mail": "jess@mail.com",
+  "password": "azerty1."
+}
+
+### Register
+POST localhost:5000/facilities/register
+content-Type: application/json
+
+{
+  "name": "Facility#3",
+  "address": "Rue de la paix, 23",
+  "mail": "jess@mail.com",
+  "password": "azerty1."
+}
