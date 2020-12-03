@@ -16,11 +16,22 @@ exports.location_list = function (req, res){
 }
 
 /*
- * location_create returns all locations in db
+ * location_create creates a new location
  * Return: the created Location
  */
 exports.location_create = function (req, res) {
-    // create new Location w/ params
-    // create new QR Code, w/ Location & params
-    // return this location
+    new FacilityLocation({
+        facility_id: req.body.facility_id,
+        name: req.body.name,
+        description: req.body.description,
+        interval: req.body.interval
+    })
+    .save()
+    .then(location => {
+        return res.json(location).status(200).end()
+    })
+    .catch(err => {
+        console.log("Error during location_create", err)
+        res.sendStatus(400)
+    })
 }
