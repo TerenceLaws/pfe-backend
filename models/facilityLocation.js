@@ -1,17 +1,14 @@
 const mongoose = require("../src/mongodb")
-const uuid = require("uuid").v4;
 
 const facilityLocationSchema = new mongoose.Schema({
-    id: {type: String, default: uuid()},
-    facility_id: {type: mongoose.ObjectId, ref: 'Facility', required: [true, 'a facility is required for this location']},
-    name: String,
-    description: String
+    facility_id: {type: mongoose.ObjectId, ref: 'Facility', required: [true, 'a facility\'s reference is required']},
+    name: {type: String, required: [true, 'a name is required']},
+    description: {type: String, required: [true, 'a description is required']},
+    interval: {type: String, enum: ['30m', '1h', '2h', '5h']}
 })
 
 facilityLocationSchema.set('toJSON', {
     transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
         delete returnedObject.__v
     }
 })

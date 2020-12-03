@@ -13,7 +13,8 @@ const facilityLocationRoutes = require("../routes/facilityLocationRouter")
 const qrCodeRoutes = require("../routes/qrCodeRouter")
 const scannedCodeRoutes = require("../routes/scannedCodeRouter")
 
-app.use(citizenRoutes, doctorRoutes, facilityRoutes, facilityLocationRoutes, qrCodeRoutes, scannedCodeRoutes)
+app.use(citizenRoutes, doctorRoutes, facilityRoutes, qrCodeRoutes, scannedCodeRoutes)
+app.use("/facilities", facilityLocationRoutes)
 
 app.get("/", function (req, res) {
     return res.send('<p>API for BlockCovid (Group 6)</p>').status(200)

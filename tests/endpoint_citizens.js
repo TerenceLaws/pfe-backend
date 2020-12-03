@@ -12,10 +12,7 @@ chai.use(chaiHttp)
 describe("Tests related to the endpoint /citizens", () => {
     let initialAmountOfCitizens;
 
-    const testCitizens = [
-        {id: "1234-1", creation_date: Date.now()},
-        {id: "1234-2", creation_date: Date.now()}
-    ]
+    const testCitizens = [{}, {}]
 
     before(function(done) {
         // Clear DB from all citizens

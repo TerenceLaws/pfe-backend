@@ -4,7 +4,7 @@
   "description": "Backend for PFE IPL 2020 Group 6",
   "main": "src/index.js",
   "scripts": {
-    "test": "set NODE_ENV=tests&& mocha ./tests/* --exit",
+    "test": "set NODE_ENV=tests&& mocha ./tests/*.js --exit",
     "start": "nodemon src/index.js",
     "nodemon": "set NODE_ENV=dev&& nodemon src/index.js"
   },
@@ -27,6 +27,7 @@
     "nodemon": "^2.0.6"
   },
   "devDependencies": {
+    "bcrypt": "^5.0.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "mocha": "^8.2.1"
