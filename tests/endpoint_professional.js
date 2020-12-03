@@ -34,7 +34,7 @@ describe("Tests related to the endpoint /professionals", () => {
         Professional.collection.deleteMany({})
 
         // Add 2 initial, default professionals
-        Professional.collection.insertOne(testProfessionals, function(err) {
+        Professional.collection.insertMany(testProfessionals, function(err) {
             if(err) return console.error(err)
         })
 
@@ -42,7 +42,7 @@ describe("Tests related to the endpoint /professionals", () => {
         done()
     })
 
-    describe("GET /professional", function() {
+    describe("GET /professionals", function() {
         it("return a list of all professionals", function(done) {
             chai.request(app)
                 .get("/professionals")
@@ -58,7 +58,7 @@ describe("Tests related to the endpoint /professionals", () => {
     })
 
     describe("POST /professionals/register", function () {
-        it("add a new facility to db", function (done) {
+        it("create and add a new facility", function (done) {
             chai.request(app)
                 .post("/professionals/register")
                 .set('content-type', 'application/json')
@@ -71,15 +71,12 @@ describe("Tests related to the endpoint /professionals", () => {
                 .end((err, res) => {
                     res.should.have.status(200)
 
-                    expect(res.body).to.be.a('array')
-                    expect(res.body).to.have.lengthOf(initialAmountOfProfessionals + 1)
-
                     done()
                 })
         })
 
 
-        it("effectively added new facility", function (done) {
+        it("verify new facility added", function (done) {
             chai.request(app)
                 .get("/professionals")
                 .end((err, res) => {
@@ -88,11 +85,13 @@ describe("Tests related to the endpoint /professionals", () => {
                     expect(res.body).to.be.a('array')
                     expect(res.body).to.have.lengthOf(initialAmountOfProfessionals + 1)
 
+                    initialAmountOfProfessionals += 1
+
                     done()
                 })
         })
 
-        it("try to add a new facility to db with mail already used", function (done) {
+        it("adding new facility with already used mail should fail", function (done) {
             chai.request(app)
                 .post("/professionals/register")
                 .set('content-type', 'application/json')
@@ -105,15 +104,12 @@ describe("Tests related to the endpoint /professionals", () => {
                 .end((err, res) => {
                     res.should.have.status(409)
 
-                    expect(res.body).to.be.a('array')
-                    expect(res.body).to.have.lengthOf(initialAmountOfProfessionals)
-
                     done()
                 })
         })
 
 
-        it("effectively not added new facility", function (done) {
+        it("verify new facility not added", function (done) {
             chai.request(app)
                 .get("/professionals")
                 .end((err, res) => {
