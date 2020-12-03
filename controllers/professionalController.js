@@ -54,16 +54,21 @@ exports.professional_register = function(req, res) {
             } else {
                 hash(req.body.password)
                     .then(hash => {
-                        const newProfessional = new Professional({
+                        new Professional({
                             name: req.body.name,
                             address: req.body.name,
                             mail: req.body.mail,
                             password: hash,
                             is_doctor: req.body.is_doctor
                         })
-
-                        Professional.collection.insertOne(newProfessional)
-                        res.sendStatus(200)
+                        .save()
+                        .then(() => {
+                            res.sendStatus(200)
+                        })
+                        .catch(error => {
+                            console.log("Error during professional_register", error)
+                            res.status(400).end()
+                        })
                     })
                     .catch(err => {
                         if (process.env.NODE_ENV === "dev") console.error(err)

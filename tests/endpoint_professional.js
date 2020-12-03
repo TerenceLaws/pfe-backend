@@ -13,20 +13,20 @@ describe("Tests related to the endpoint /professionals", () => {
     let initialAmountOfProfessionals;
 
     const testProfessionals = [
-        {
+        new Professional({
             name: "Facility#1",
             address: "Rue de la paix, 23",
             mail: "jess@mail.com",
             password: "azerty1.",
             is_doctor: false
-        },
-        {
+        }),
+        new Professional({
             name: "Doctor#1",
             address: "Rue de la medecine, 89",
             mail: "doctor@mail.com",
             password: "azerty1.",
             is_doctor: true
-        },
+        })
     ]
 
     before(function(done) {
@@ -34,12 +34,14 @@ describe("Tests related to the endpoint /professionals", () => {
         Professional.collection.deleteMany({})
 
         // Add 2 initial, default professionals
-        Professional.collection.insertMany(testProfessionals, function(err) {
-            if(err) return console.error(err)
-        })
-
-        initialAmountOfProfessionals = testProfessionals.length
-        done()
+        Professional.collection.insertMany(testProfessionals)
+            .then(() => {
+                initialAmountOfProfessionals = testProfessionals.length
+                done()
+            })
+            .catch(err => {
+                return console.error(err)
+            })
     })
 
     describe("GET /professionals", function() {
