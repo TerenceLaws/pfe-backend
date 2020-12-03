@@ -21,50 +21,59 @@ function hash(password){
  * Return: JSON of professional if authenticated, 401 otherwise
  */
 exports.professional_login = function(req, res){
-    Professional.find({mail: req.body.mail}).then(result => {
-         if (result.length === 0) {
-             console.log("mail not in db")
-             res.sendStatus(401)
-         } else {
-             bcrypt.compare(req.body.password, result[0].password)
-                 .then(result => {
-                     console.log(result)
-                     if(!result) {
-                         console.log("wrong password")
-                         res.sendStatus(401)
-                     } else {
-                         console.log("authenticated !")
-                         res.json(result).status(200).end()
-                     }
-                })
-                 .catch(err => {
-                     if(process.env.NODE_ENV === "dev") console.error(err)
-                     res.sendStatus(500)
-                 })
+    Professional.find({mail: req.body.mail})
+        .then(result => {
+             if (result.length === 0) {
+                 res.sendStatus(401)
+             } else {
+                 bcrypt.compare(req.body.password, result[0].password)
+                     .then(result => {
+                         if(!result) {
+                             res.sendStatus(401)
+                         } else {
+                             res.json(result).status(200).end()
+                         }
+                    })
+         .catch(err => {
+             if(process.env.NODE_ENV === "dev") console.error(err)
+             res.sendStatus(500)
+         })
          }
      })
 }
 
+/*
+ * professional_register registers a new professional only if mail isn't already in db
+ * Return: status 200 if success, 409 if mail already in db
+ */
 exports.professional_register = function(req, res) {
-    hash(req.body.password)
-        .then(hash => {
-            console.log(hash)
+    Professional.find({mail: req.body.mail})
+        .then(result => {
+            if(result.length !== 0){
+                res.sendStatus(409)
+            } else {
+                hash(req.body.password)
+                    .then(hash => {
+                        const newProfessional = new Professional({
+                            name: req.body.name,
+                            address: req.body.name,
+                            mail: req.body.mail,
+                            password: hash,
+                            is_doctor: req.body.is_doctor
+                        })
 
-            const newProfessional = new Professional({
-                name: req.body.name,
-                address: req.body.name,
-                mail: req.body.mail,
-                password: hash,
-                is_doctor: req.body.is_doctor
-            })
+                        Professional.collection.insertOne(newProfessional)
+                        res.sendStatus(200)
+                    })
+                    .catch(err => {
+                        if (process.env.NODE_ENV === "dev") console.error(err)
+                        res.sendStatus(500)
+                    })
+            }
+        })
 
-            Professional.collection.insertOne(newProfessional)
-            res.sendStatus(200)
-        })
-        .catch(err => {
-            if(process.env.NODE_ENV === "dev") console.error(err)
-            res.sendStatus(500)
-        })
+
+
 
 
 }
