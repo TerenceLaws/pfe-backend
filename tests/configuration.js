@@ -41,9 +41,7 @@ const professionalLoginSuccess = {
     mail: testAddProfessional.mail,
     password: testAddProfessional.password
 }
-const professionalAlreadyUsedMail = {
-    name: "Facility#3",
-    address: "Rue du test, 165",
+const professionalAlreadyUsedMail = {name: "Facility#3", address: "Rue du test, 165",
     mail: testProfessionals[0].mail,
     password: "undeuxTest56.",
     is_doctor: false
@@ -70,6 +68,7 @@ const testAddLocation = {
     description: "Description for Location Hotel",
     interval: "5h"
 }
+
 
 module.exports = {
     testCitizens,
