@@ -5,9 +5,9 @@ require('dotenv').config()
 const chai = require("chai");
 const chaiHttp = require("chai-http")
 const expect = chai.expect;
-const should = chai.should();
 
 chai.use(chaiHttp)
+chai.should();
 
 describe("Tests related to the endpoint /citizens", () => {
     let initialAmountOfCitizens;
@@ -46,7 +46,7 @@ describe("Tests related to the endpoint /citizens", () => {
     });
 
     describe("POST /citizens", function (){
-        it("create a new citizen", function (done){
+        it("create and add new citizen", function (done){
             chai.request(app)
                 .post("/citizens")
                 .end((err, res) => {
