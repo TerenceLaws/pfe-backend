@@ -4,7 +4,7 @@
   "description": "Backend for PFE IPL 2020 Group 6",
   "main": "src/index.js",
   "scripts": {
-    "test": "set NODE_ENV=tests&& mocha ./tests/*.js --exit",
+    "test": "set NODE_ENV=tests&& mocha tests/*.js --exit",
     "start": "nodemon src/index.js",
     "nodemon": "set NODE_ENV=dev&& nodemon src/index.js"
   },

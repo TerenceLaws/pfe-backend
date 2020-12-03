@@ -1,5 +1,6 @@
 const app = require("../src");
 const Citizen = require("../models/citizen")
+const config = require("./configuration");
 require('dotenv').config()
 
 const chai = require("chai");
@@ -12,19 +13,14 @@ chai.should();
 describe("Tests related to the endpoint /citizens", () => {
     let initialAmountOfCitizens;
 
-    const testCitizens = [
-        new Citizen({}),
-        new Citizen({})
-    ]
-
     before(function(done) {
         // Clear DB from all citizens
          Citizen.collection.deleteMany({})
 
         // Add initial citizens
-        Citizen.collection.insertMany(testCitizens)
+        Citizen.collection.insertMany(config.testCitizens)
             .then(() => {
-                initialAmountOfCitizens = testCitizens.length;
+                initialAmountOfCitizens = config.testCitizens.length;
                 done()
             })
             .catch((err) => {console.error(err)})
@@ -49,6 +45,8 @@ describe("Tests related to the endpoint /citizens", () => {
         it("create and add new citizen", function (done){
             chai.request(app)
                 .post("/citizens")
+                .set('content-type', 'application/json')
+                .send(config.testAddCitizen)
                 .end((err, res) => {
                     res.should.have.status(200)
 
@@ -63,7 +61,7 @@ describe("Tests related to the endpoint /citizens", () => {
                     res.should.have.status(200)
 
                     expect(res.body).to.be.a('array')
-                    expect(res.body).to.have.lengthOf(initialAmountOfCitizens + 1)
+                    expect(res.body).to.have.lengthOf(++initialAmountOfCitizens)
 
                     done()
                 })
