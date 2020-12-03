@@ -1,14 +1,14 @@
-const Facility = require("../models/facility")
+const Professional = require("../models/professional")
 const bcrypt = require('bcrypt')
 const SALT = 10
 
 /*
- * facility_list returns all facilities in db
- * Return: array of JSON objects representing all db facilities
+ * professional_list returns all professionals in db
+ * Return: array of JSON objects representing all db professionals
  */
-exports.facility_list = function (req, res){
-    Facility.find({}).then(result => {
-        return res.json(result)
+exports.professional_list = function (req, res){
+    Professional.find({}).then(result => {
+        res.json(result).status(200).end()
     })
 }
 
@@ -17,11 +17,11 @@ function hash(password){
 }
 
 /*
- * facility_login verifies mail and password received with bcrypt
- * Return: JSON of facility if authenticated, 401 otherwise
+ * professional_login verifies mail and password received with bcrypt
+ * Return: JSON of professional if authenticated, 401 otherwise
  */
-exports.facility_login = function(req, res){
-     Facility.find({mail: req.body.mail}).then(result => {
+exports.professional_login = function(req, res){
+    Professional.find({mail: req.body.mail}).then(result => {
          if (result.length === 0) {
              console.log("mail not in db")
              res.sendStatus(401)
@@ -45,19 +45,20 @@ exports.facility_login = function(req, res){
      })
 }
 
-exports.facility_register = function(req, res) {
+exports.professional_register = function(req, res) {
     hash(req.body.password)
         .then(hash => {
             console.log(hash)
 
-            const newFacility = new Facility({
+            const newProfessional = new Professional({
                 name: req.body.name,
                 address: req.body.name,
                 mail: req.body.mail,
-                password: hash
+                password: hash,
+                is_doctor: req.body.is_doctor
             })
 
-            Facility.collection.insertOne(newFacility)
+            Professional.collection.insertOne(newProfessional)
             res.sendStatus(200)
         })
         .catch(err => {
