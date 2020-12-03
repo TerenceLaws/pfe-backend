@@ -9,7 +9,7 @@ const should = chai.should();
 
 chai.use(chaiHttp)
 
-describe("API Routes", () => {
+describe("Tests related to the endpoint /citizens", () => {
     let initialAmountOfCitizens;
 
     const testCitizens = [
