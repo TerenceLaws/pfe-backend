@@ -9,3 +9,8 @@ exports.facility_location_list = function (req, res){
         return res.json(result)
     })
 }
+
+exports.pro_loc_add = function (req, res) {
+    // create new Location w/ params
+    // create new QR Code, w/ Location & params
+}
