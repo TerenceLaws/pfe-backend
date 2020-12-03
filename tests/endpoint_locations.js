@@ -32,12 +32,12 @@ describe("Tests related to the endpoint /professionals/locations", () => {
         FacilityLocation.collection.deleteMany({})
 
         // Add initial Locations
-        FacilityLocation.collection.insertMany(testLocations, function (err) {
-            if (err) return console.error(err)
-        })
-
-        initialAmountOfLocations = testLocations.length;
-        done()
+        FacilityLocation.collection.insertMany(testLocations)
+            .then(() => {
+                initialAmountOfLocations = testLocations.length;
+                done()
+            })
+            .catch((err) => {console.error(err)})
     });
 
     describe("GET /professionals/locations", function () {

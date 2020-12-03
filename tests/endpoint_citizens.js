@@ -22,12 +22,12 @@ describe("Tests related to the endpoint /citizens", () => {
          Citizen.collection.deleteMany({})
 
         // Add initial citizens
-        Citizen.collection.insertMany(testCitizens, function (err){
-            if(err) return console.error(err)
-        })
-
-        initialAmountOfCitizens = testCitizens.length;
-        done()
+        Citizen.collection.insertMany(testCitizens)
+            .then(() => {
+                initialAmountOfCitizens = testCitizens.length;
+                done()
+            })
+            .catch((err) => {console.error(err)})
     });
 
     describe("GET /citizens", function() {
