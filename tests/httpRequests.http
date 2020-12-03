@@ -39,3 +39,11 @@ content-Type: application/json
   "password": "azerty1.",
   "is_doctor": false
 }
+
+### Insert Qrcode
+POST localhost:5000/qrcodes
+content-type: application/json
+
+{
+  "location_id": "123"
+}
