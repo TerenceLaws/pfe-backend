@@ -57,7 +57,7 @@ describe("Tests related to the endpoint /professionals", () => {
         })
 
 
-        it("verify new facility added", function (done) {
+        it("verify new facility got added", function (done) {
             chai.request(app)
                 .get("/professionals")
                 .end((err, res) => {
@@ -74,7 +74,7 @@ describe("Tests related to the endpoint /professionals", () => {
             chai.request(app)
                 .post("/professionals/register")
                 .set('content-type', 'application/json')
-                .send(config.professionalAlreadyUsedMail)
+                .send(config.professionalRegisterUsedMail)
                 .end((err, res) => {
                     res.should.have.status(409)
 
@@ -83,7 +83,7 @@ describe("Tests related to the endpoint /professionals", () => {
         })
 
 
-        it("verify new facility not added", function (done) {
+        it("verify new facility did not get added", function (done) {
             chai.request(app)
                 .get("/professionals")
                 .end((err, res) => {
@@ -98,11 +98,11 @@ describe("Tests related to the endpoint /professionals", () => {
     })
 
     describe("POST /professionals/login", function () {
-        it("try to login with mail not in db", function (done) {
+        it("login with mail not in db should fail", function (done) {
             chai.request(app)
                 .post("/professionals/login")
                 .set('content-type', 'application/json')
-                .send(config.professionalWrongMail)
+                .send(config.professionalLoginWrongMail)
                 .end((err, res) => {
                     res.should.have.status(401)
 
@@ -110,7 +110,19 @@ describe("Tests related to the endpoint /professionals", () => {
                 })
         })
 
-        it("try to login with mail in db", function (done) {
+        it("login with wrong password should fail", function (done) {
+            chai.request(app)
+                .post("/professionals/login")
+                .set('content-type', 'application/json')
+                .send(config.professionalLoginWrongPass)
+                .end((err, res) => {
+                    res.should.have.status(401)
+
+                    done()
+                })
+        })
+
+        it("login with correct mail and password successful", function (done) {
             chai.request(app)
                 .post("/professionals/login")
                 .set('content-type', 'application/json')

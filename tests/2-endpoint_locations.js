@@ -51,7 +51,6 @@ describe("Tests related to the endpoint /professionals/locations", () => {
                     res.should.have.status(200)
 
                     expect(res.body).to.not.be.null
-                    // TODO: more.
 
                     done()
                 })

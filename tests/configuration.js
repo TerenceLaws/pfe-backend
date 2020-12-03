@@ -33,7 +33,7 @@ const testAddProfessional = {
     password: "qwerty2.",
     is_doctor: false
 }
-const professionalWrongMail = {
+const professionalLoginWrongMail = {
     mail: "mostDefinatelyNotInDb@mail.be",
     password: "password_wont_get_tested_anyway."
 }
@@ -41,13 +41,18 @@ const professionalLoginSuccess = {
     mail: testAddProfessional.mail,
     password: testAddProfessional.password
 }
-const professionalAlreadyUsedMail = {
+const professionalLoginWrongPass = {
+    mail: testAddProfessional.mail,
+    password: "most_definitely_a_wrong_password"
+}
+const professionalRegisterUsedMail = {
     name: "Facility#3",
     address: "Rue du test, 165",
     mail: testProfessionals[0].mail,
     password: "undeuxTest56.",
     is_doctor: false
 }
+
 
 // Location-related Config
 const testLocations = [
@@ -77,9 +82,10 @@ module.exports = {
 
     testProfessionals,
     testAddProfessional,
-    professionalWrongMail,
+    professionalLoginWrongMail,
     professionalLoginSuccess,
-    professionalAlreadyUsedMail,
+    professionalLoginWrongPass,
+    professionalRegisterUsedMail,
 
     testLocations,
     testAddLocation
