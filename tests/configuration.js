@@ -34,7 +34,7 @@ const testAddProfessional = {
     is_doctor: false
 }
 const professionalLoginWrongMail = {
-    mail: "mostDefinatelyNotInDb@mail.be",
+    mail: "mostDefinitelyNotInDb@mail.be",
     password: "password_wont_get_tested_anyway."
 }
 const professionalLoginSuccess = {
