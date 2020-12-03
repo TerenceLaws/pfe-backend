@@ -11,7 +11,7 @@ exports.list_citizens = function (req, res){
         })
         .catch(err => {
             console.log("Error during list_citizens", err)
-            res.status(400).end()
+            res.sendStatus(400)
         })
 }
 
@@ -23,10 +23,10 @@ exports.create_citizen = function (req, res) {
     new Citizen({})
         .save()
         .then(() => {
-            res.status(200).end()
+            res.sendStatus(200)
         })
         .catch(err => {
             console.log("Error during create_citizen", err)
-            res.status(400).end()
+            res.sendStatus(400)
         })
 }

@@ -11,7 +11,7 @@ exports.location_list = function (req, res){
         })
         .catch(err => {
             console.log("Error during location_list", err)
-            res.status(400).end()
+            res.sendStatus(400)
         })
 }
 
