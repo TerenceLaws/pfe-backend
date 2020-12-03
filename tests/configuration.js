@@ -1,6 +1,7 @@
 const Citizen = require("../models/citizen")
 const FacilityLocation = require("../models/location")
 const Professional = require("../models/professional")
+const QRCode = require("../models/qrCode")
 
 // Citizen-related Config
 const testCitizens = [
@@ -53,7 +54,6 @@ const professionalRegisterUsedMail = {
     is_doctor: false
 }
 
-
 // Location-related Config
 const testLocations = [
     new FacilityLocation({
@@ -76,6 +76,17 @@ const testAddLocation = {
     interval: "5h"
 }
 
+const testQRCodes = [
+    new QRCode({
+        doctor_id: null,
+        location_id: testLocations[0]._id
+    }),
+    new QRCode({
+        doctor_id: testProfessionals[1]._id,
+        location_id: null
+    })
+]
+
 module.exports = {
     testCitizens,
     testAddCitizen,
@@ -88,5 +99,7 @@ module.exports = {
     professionalRegisterUsedMail,
 
     testLocations,
-    testAddLocation
+    testAddLocation,
+
+    testQRCodes
 }
