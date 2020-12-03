@@ -1,14 +1,18 @@
 const Citizen = require("../models/citizen")
 
 /*
- * citizen_list returns all citizens in db
+ * list_citizens returns all citizens in db
  * Return: array of JSON objects representing all db citizens
  */
-exports.citizen_list = function (req, res){
-    Citizen.find({}).then(result => {
-        return res.json(result)
-    })
-    // TODO: catch
+exports.list_citizens = function (req, res){
+    Citizen.find({})
+        .then(result => {
+            return res.json(result).status(200).end()
+        })
+        .catch(err => {
+            console.log("Error during list_citizens", err)
+            res.status(400).end()
+        })
 }
 
 /*
@@ -21,8 +25,8 @@ exports.create_citizen = function (req, res) {
         .then(() => {
             res.status(200).end()
         })
-        .catch(error => {
-            console.log("Error during create_citizen", error)
+        .catch(err => {
+            console.log("Error during create_citizen", err)
             res.status(400).end()
         })
 }

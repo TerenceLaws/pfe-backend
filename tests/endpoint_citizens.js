@@ -12,13 +12,16 @@ chai.use(chaiHttp)
 describe("Tests related to the endpoint /citizens", () => {
     let initialAmountOfCitizens;
 
-    const testCitizens = [{}, {}]
+    const testCitizens = [
+        new Citizen({}),
+        new Citizen({})
+    ]
 
     before(function(done) {
         // Clear DB from all citizens
          Citizen.collection.deleteMany({})
 
-        // Add 2 initial, default citizens
+        // Add initial citizens
         Citizen.collection.insertMany(testCitizens, function (err){
             if(err) return console.error(err)
         })
@@ -43,7 +46,7 @@ describe("Tests related to the endpoint /citizens", () => {
     });
 
     describe("POST /citizens", function (){
-        it("add a new user to db", function (done){
+        it("create a new citizen", function (done){
             chai.request(app)
                 .post("/citizens")
                 .end((err, res) => {
@@ -53,7 +56,7 @@ describe("Tests related to the endpoint /citizens", () => {
                 })
         })
 
-        it("effectively added new citizen", function (done){
+        it("verify new citizen added", function (done){
             chai.request(app)
                 .get("/citizens")
                 .end((err, res) => {
