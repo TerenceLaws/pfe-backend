@@ -16,8 +16,8 @@ exports.qrcode_list = function (req, res){
  */
 exports.qrcode_insert = function(req, res) {
     new QRCode({
-        doctor_id: req.body.doctor_id ?? null,
-        location_id: req.body.location_id ?? null
+        doctor_id: (req.body.doctor_id || null),
+        location_id: (req.body.location_id || null)
     })
     .save()
     .then(() => {

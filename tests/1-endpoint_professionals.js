@@ -56,7 +56,6 @@ describe("Tests related to the endpoint /professionals", () => {
                 })
         })
 
-
         it("verify new facility got added", function (done) {
             chai.request(app)
                 .get("/professionals")
@@ -81,7 +80,6 @@ describe("Tests related to the endpoint /professionals", () => {
                     done()
                 })
         })
-
 
         it("verify new facility did not get added", function (done) {
             chai.request(app)

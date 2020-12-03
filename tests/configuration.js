@@ -76,6 +76,7 @@ const testAddLocation = {
     interval: "5h"
 }
 
+// QRCode-related Config
 const testQRCodes = [
     new QRCode({
         doctor_id: null,
@@ -86,6 +87,10 @@ const testQRCodes = [
         location_id: null
     })
 ]
+const testAddQRCode = {
+    doctor_id: null,
+    location_id: testLocations[0]._id
+}
 
 module.exports = {
     testCitizens,
@@ -101,5 +106,6 @@ module.exports = {
     testLocations,
     testAddLocation,
 
-    testQRCodes
+    testQRCodes,
+    testAddQRCode
 }
