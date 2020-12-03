@@ -36,5 +36,6 @@ content-Type: application/json
   "name": "Facility#3",
   "address": "Rue de la paix, 23",
   "mail": "jess@mail.com",
-  "password": "azerty1."
+  "password": "azerty1.",
+  "is_doctor": false
 }
