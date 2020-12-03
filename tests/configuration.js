@@ -2,6 +2,7 @@ const Citizen = require("../models/citizen")
 const FacilityLocation = require("../models/location")
 const Professional = require("../models/professional")
 const QRCode = require("../models/qrCode")
+const ScannedCode = require("../models/scannedCode")
 
 // Citizen-related Config
 const testCitizens = [
@@ -92,6 +93,26 @@ const testAddQRCode = {
     location_id: testLocations[0]._id
 }
 
+// ScannedCodes-related Config
+const testScannedCodes = [
+    new ScannedCode({
+        citizen_id: testCitizens[0]._id,
+        qrcode_id: testQRCodes[0]._id
+    }),
+    new ScannedCode({
+        citizen_id: testAddQRCode._id,
+        qrcode_id: testAddQRCode._id
+    })
+]
+const testAddScannedCode = {
+    citizen_id: testCitizens[1]._id,
+    qrcode_id: testQRCodes[0]._id
+}
+const testAddScannedCodeNotInDb = {
+    citizen_id: 345,
+    qrcode_id: testQRCodes[0]._id
+}
+
 module.exports = {
     testCitizens,
     testAddCitizen,
@@ -107,5 +128,9 @@ module.exports = {
     testAddLocation,
 
     testQRCodes,
-    testAddQRCode
+    testAddQRCode,
+
+    testScannedCodes,
+    testAddScannedCode,
+    testAddScannedCodeNotInDb
 }

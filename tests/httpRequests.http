@@ -47,3 +47,12 @@ content-type: application/json
 {
   "location_id": "123"
 }
+
+### Insert ScannedCode with not existing id
+POST localhost:5000/scannedcodes
+content-type: application/json
+
+{
+  "citizen-id": 34,
+  "qrcode_id": 36
+}
