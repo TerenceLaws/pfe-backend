@@ -7,7 +7,7 @@ app.use(express.json())
 app.use(logger('tiny', { skip: () => process.env.NODE_ENV === "tests" }))
 
 const citizenRoutes = require("../routes/citizenRouter")
-const professionalRoutes = require("../routes/professional")
+const professionalRoutes = require("../routes/professionalRouter")
 const facilityLocationRoutes = require("../routes/facilityLocationRouter")
 const qrCodeRoutes = require("../routes/qrCodeRouter")
 const scannedCodeRoutes = require("../routes/scannedCodeRouter")
