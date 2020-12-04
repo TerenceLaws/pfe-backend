@@ -8,6 +8,9 @@ const SALT = 10
  */
 exports.professional_list = function (req, res){
     Professional.find({}).then(result => {
+        for(let i=0; i<result.length; i++){
+            result[i].password = undefined
+        }
         res.json(result).status(200).end()
     })
 }
@@ -31,6 +34,12 @@ exports.professional_login = function(req, res){
                          if(!compareResult) {
                              res.sendStatus(401)
                          } else {
+                             for(let i=0; i<result.length; i++){
+                                 result[i].password = undefined
+                             }
+                             for(let i=0; i<result.length; i++){
+                                 result[i].password = undefined
+                             }
                              res.json(result).status(200).end()
                          }
                     })

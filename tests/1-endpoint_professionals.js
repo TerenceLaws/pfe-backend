@@ -130,7 +130,7 @@ describe("Tests related to the endpoint /professionals", () => {
 
                     expect(res.body).to.be.a('array')
                     expect(res.body).to.have.lengthOf(1)
-                    
+
                     done()
                 })
         })
