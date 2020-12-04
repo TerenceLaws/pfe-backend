@@ -128,6 +128,9 @@ describe("Tests related to the endpoint /professionals", () => {
                 .end((err, res) => {
                     res.should.have.status(200)
 
+                    expect(res.body).to.be.a('array')
+                    expect(res.body).to.have.lengthOf(1)
+                    
                     done()
                 })
         })

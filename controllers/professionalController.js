@@ -27,8 +27,8 @@ exports.professional_login = function(req, res){
                  res.sendStatus(401)
              } else {
                  bcrypt.compare(req.body.password, result[0].password)
-                     .then(result => {
-                         if(!result) {
+                     .then(compareResult => {
+                         if(!compareResult) {
                              res.sendStatus(401)
                          } else {
                              res.json(result).status(200).end()
