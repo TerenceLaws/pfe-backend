@@ -1,24 +1,23 @@
 const app = require("../src");
-const ScannedCodes = require("../models/scannedCode")
+const ScannedCode = require("../models/scannedCode")
 const config = require("./configuration");
-require('dotenv').config()
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")
 const expect = chai.expect;
-const should = chai.should();
 
 chai.use(chaiHttp)
+chai.should();
 
 describe("Tests related to the endpoint /scannedcodes", () => {
     let initialAmountOfScannedCodes
 
     before(function(done) {
         // Clear DB from all scannedcodes
-        ScannedCodes.collection.deleteMany({})
+        ScannedCode.collection.deleteMany({})
 
         // Add initial ScannedCodes
-        ScannedCodes.collection.insertMany(config.testScannedCodes)
+        ScannedCode.collection.insertMany(config.testScannedCodes)
             .then(() => {
                 initialAmountOfScannedCodes = config.testScannedCodes.length
                 done()

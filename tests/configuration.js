@@ -92,6 +92,14 @@ const testAddQRCode = {
     doctor_id: null,
     location_id: testLocations[0]._id
 }
+const scanNonDoctorQRCode = {
+    qrcode_id: testQRCodes[0]._id,
+    citizen_id: testCitizens[0]._id
+}
+const scanDoctorQRCode = {
+    qrcode_id: testQRCodes[1]._id,
+    citizen_id: testCitizens[0]._id
+}
 
 // QRcodes for location => testLocations[0]._id
 // Location from facility => testAddProfessional[0]
@@ -104,8 +112,8 @@ const testScannedCodes = [
         qrcode_id: testQRCodes[0]._id
     }),
     new ScannedCode({
-        citizen_id: testAddQRCode._id,
-        qrcode_id: testAddQRCode._id
+        citizen_id: testCitizens[1]._id,
+        qrcode_id: testQRCodes[0]._id
     })
 ]
 const testAddScannedCode = {
@@ -133,6 +141,8 @@ module.exports = {
 
     testQRCodes,
     testAddQRCode,
+    scanNonDoctorQRCode,
+    scanDoctorQRCode,
     testFacilityQRCodesURL,
 
     testScannedCodes,

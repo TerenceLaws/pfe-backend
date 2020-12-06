@@ -1,7 +1,7 @@
 const app = require("../src")
 const QRCode = require("../models/qrCode")
+const ScannedCode = require("../models/scannedCode")
 const config = require("./configuration")
-require('dotenv').config()
 
 const chai = require("chai")
 const chaiHttp = require("chai-http")
@@ -10,6 +10,8 @@ const expect = chai.expect
 chai.use(chaiHttp)
 chai.should()
 
+describe("Tests related to the endpoint /qrcodes", () => {
+    let initialAmountOfQRCodes
 describe("Tests related to the endpoint /qrcodes", () => {
     let initialAmountOfQRCodes
 
@@ -44,7 +46,7 @@ describe("Tests related to the endpoint /qrcodes", () => {
     describe("POST /qrcodes", function () {
         it("create and add new QR Code", function (done) {
             chai.request(app)
-                .post("/qrcodes")
+                .post("/qrcodes/insert")
                 .set('content-type', 'application/json')
                 .send(config.testAddQRCode)
                 .end((err, res) => {
@@ -66,6 +68,37 @@ describe("Tests related to the endpoint /qrcodes", () => {
                     done()
                 })
         })
-    })
 
+        it("scanning a non-doctor QR code adds an entry to endpoint /qrcodescanned", function (done){
+            chai.request(app)
+                .post("/qrcodes/scan")
+                .set('content-type', 'application/json')
+                .send(config.scanNonDoctorQRCode)
+                .end((err, res) => {
+                    res.should.have.status(200)
+
+                    ScannedCode.find({
+                        citizen_id: config.scanNonDoctorQRCode.citizen_id,
+                        qrcode_id: config.scanNonDoctorQRCode.qrcode_id
+                    }).then(result => {
+                        expect(result).to.be.a('array')
+                        expect(result).to.have.lengthOf(1)
+
+                        done()
+                    })
+                })
+        })
+
+        it("scanning a doctor QR code returns a list of IDs to notify", function (done){
+            chai.request(app)
+                .post("/qrcodes/scan")
+                .set('content-type', 'application/json')
+                .send(config.scanDoctorQRCode)
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    // TODO
+                    done()
+                })
+        })
+    })
 })

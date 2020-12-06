@@ -1,5 +1,6 @@
 const QRCode = require("../models/qrCode")
 const Location = require("../models/location")
+const ScannedCode = require("../models/scannedCode")
 
 /*
  * qr_code_list returns all qr codes in db
@@ -32,4 +33,43 @@ exports.qrcode_insert = function(req, res) {
 
 exports.qrcode_find_by_facility_id = function(req, res) {
  //TODO
+}
+/*
+ * qrcode_scan scans a QR Code, and either
+ *  1) DOCTOR-MADE QR: Notifies everyone that got in contact w/ this patient that tested positive
+ *  2) NON-DOCTOR QR:  Adds a new entry to scannedcodes notifing citizen_id scanned a code.
+ */
+exports.qrcode_scan = function (req, res){
+    QRCode.find({_id: req.body.qrcode_id}).then(result => {
+        if(result[0].doctor_id !== null)
+            notifyRisk(req, res)
+        else if(result[0].location_id !== null)
+            logToScannedCodes(req, res)
+        else
+            res.sendStatus(400)
+    })
+    .catch(err => {
+        if (process.env.NODE_ENV === "dev") console.error(err)
+        res.sendStatus(500)
+    })
+}
+
+const notifyRisk = (req, res) => {
+    console.log("NotifyRisk w/", req.body.qrcode_id, req.body.citizen_id)
+    res.sendStatus(200)
+}
+
+const logToScannedCodes = (req, res) => {
+    new ScannedCode({
+        citizen_id: req.body.citizen_id,
+        qrcode_id: req.body.qrcode_id
+    })
+    .save()
+    .then(() => {
+        res.sendStatus(200)
+    })
+    .catch(err => {
+        if (process.env.NODE_ENV === "dev") console.error(err)
+        res.sendStatus(500)
+    })
 }
