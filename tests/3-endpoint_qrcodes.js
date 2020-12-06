@@ -81,9 +81,9 @@ describe("Tests related to the endpoint /qrcodes", () => {
                     }).then(result => {
                         expect(result).to.be.a('array')
                         expect(result).to.have.lengthOf(1)
-                    })
 
-                    done()
+                        done()
+                    })
                 })
         })
 
