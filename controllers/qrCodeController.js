@@ -1,4 +1,5 @@
 const QRCode = require("../models/qrCode")
+const Location = require("../models/location")
 
 /*
  * qr_code_list returns all qr codes in db
@@ -6,7 +7,7 @@ const QRCode = require("../models/qrCode")
  */
 exports.qrcode_list = function (req, res){
     QRCode.find({}).then(result => {
-        return res.json(result)
+        return res.json(result).status(200).end()
     })
 }
 
@@ -27,4 +28,8 @@ exports.qrcode_insert = function(req, res) {
         if (process.env.NODE_ENV === "dev") console.error(err)
         res.sendStatus(500)
     })
+}
+
+exports.qrcode_find_by_facility_id = function(req, res) {
+ //TODO
 }

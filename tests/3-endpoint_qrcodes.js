@@ -1,17 +1,17 @@
-const app = require("../src");
+const app = require("../src")
 const QRCode = require("../models/qrCode")
-const config = require("./configuration");
+const config = require("./configuration")
 require('dotenv').config()
 
-const chai = require("chai");
+const chai = require("chai")
 const chaiHttp = require("chai-http")
-const expect = chai.expect;
+const expect = chai.expect
 
 chai.use(chaiHttp)
-chai.should();
+chai.should()
 
-describe("Tests related to the endpoint /professionals/locations", () => {
-    let initialAmountOfQRCodes;
+describe("Tests related to the endpoint /qrcodes", () => {
+    let initialAmountOfQRCodes
 
     before(function (done) {
         // Clear DB from all QRCodes
@@ -24,7 +24,7 @@ describe("Tests related to the endpoint /professionals/locations", () => {
                 done()
             })
             .catch((err) => {console.error(err)})
-    });
+    })
 
     describe("GET /qrcodes", function () {
         it("return a list of all QR Codes", function (done) {
@@ -38,8 +38,8 @@ describe("Tests related to the endpoint /professionals/locations", () => {
 
                     done()
                 })
-        });
-    });
+        })
+    })
 
     describe("POST /qrcodes", function () {
         it("create and add new QR Code", function (done) {
@@ -67,4 +67,5 @@ describe("Tests related to the endpoint /professionals/locations", () => {
                 })
         })
     })
+
 })
