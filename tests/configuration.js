@@ -91,6 +91,14 @@ const testAddQRCode = {
     doctor_id: null,
     location_id: testLocations[0]._id
 }
+const scanNonDoctorQRCode = {
+    qrcode_id: testQRCodes[0]._id,
+    citizen_id: testCitizens[0]._id
+}
+const scanDoctorQRCode = {
+    qrcode_id: testQRCodes[1]._id,
+    citizen_id: testCitizens[0]._id
+}
 
 module.exports = {
     testCitizens,
@@ -107,5 +115,7 @@ module.exports = {
     testAddLocation,
 
     testQRCodes,
-    testAddQRCode
+    testAddQRCode,
+    scanNonDoctorQRCode,
+    scanDoctorQRCode
 }
