@@ -1,5 +1,5 @@
 const app = require("../src");
-const ScannedCodes = require("../models/scannedCode")
+const ScannedCode = require("../models/scannedCode")
 const config = require("./configuration");
 require('dotenv').config()
 
@@ -15,10 +15,10 @@ describe("Tests related to the endpoint /scannedcodes", () => {
 
     before(function(done) {
         // Clear DB from all scannedcodes
-        ScannedCodes.collection.deleteMany({})
+        ScannedCode.collection.deleteMany({})
 
         // Add initial ScannedCodes
-        ScannedCodes.collection.insertMany(config.testScannedCodes)
+        ScannedCode.collection.insertMany(config.testScannedCodes)
             .then(() => {
                 initialAmountOfScannedCodes = config.testScannedCodes.length
                 done()
