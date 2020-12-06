@@ -108,8 +108,8 @@ const testScannedCodes = [
         qrcode_id: testQRCodes[0]._id
     }),
     new ScannedCode({
-        citizen_id: testAddQRCode._id,
-        qrcode_id: testAddQRCode._id
+        citizen_id: testCitizens[1]._id,
+        qrcode_id: testQRCodes[0]._id
     })
 ]
 const testAddScannedCode = {
