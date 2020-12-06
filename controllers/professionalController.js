@@ -33,13 +33,14 @@ exports.professional_login = function(req, res){
                          } else {
                              res.json(result).status(200).end()
                          }
-                    })
-         .catch(err => {
-             if(process.env.NODE_ENV === "dev") console.error(err)
-             res.sendStatus(500)
-         })
-         }
+                     })
+                     .catch(err => {
+                         if(process.env.NODE_ENV === "dev") console.error(err)
+                         res.sendStatus(500)
+                     })
+             }
      })
+    //.catch()
 }
 
 /*
