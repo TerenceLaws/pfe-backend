@@ -2,7 +2,6 @@ const app = require("../src");
 const QRCode = require("../models/qrCode")
 const ScannedCode = require("../models/scannedCode")
 const config = require("./configuration")
-require('dotenv').config()
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")

@@ -1,7 +1,6 @@
 const app = require("../src");
 const Citizen = require("../models/citizen")
 const config = require("./configuration");
-require('dotenv').config()
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")

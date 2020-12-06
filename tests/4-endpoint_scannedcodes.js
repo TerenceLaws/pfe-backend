@@ -1,14 +1,13 @@
 const app = require("../src");
 const ScannedCode = require("../models/scannedCode")
 const config = require("./configuration");
-require('dotenv').config()
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")
 const expect = chai.expect;
-const should = chai.should();
 
 chai.use(chaiHttp)
+chai.should();
 
 describe("Tests related to the endpoint /scannedcodes", () => {
     let initialAmountOfScannedCodes
