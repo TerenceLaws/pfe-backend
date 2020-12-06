@@ -76,10 +76,5 @@ exports.professional_register = function(req, res) {
                     })
             }
         })
-
-
-
-
-
 }
 
