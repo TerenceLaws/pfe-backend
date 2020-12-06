@@ -17,13 +17,13 @@ exports.list_citizens = function (req, res){
 
 /*
  * create_citizen creates a new citizen in db
- * Return: 200 if it went well, 400 if not.
+ * Return: citizen's id + 200 if it went well, 400 if not.
  */
 exports.create_citizen = function (req, res) {
     new Citizen({})
         .save()
-        .then(() => {
-            res.sendStatus(200)
+        .then(citizen => {
+            res.json(citizen).status(200).end()
         })
         .catch(err => {
             console.log("Error during create_citizen", err)
