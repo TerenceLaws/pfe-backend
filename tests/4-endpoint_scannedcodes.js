@@ -42,10 +42,10 @@ describe("Tests related to the endpoint /scannedcodes", () => {
         })
     })
 
-    describe("POST /scannedcodes", function () {
+    describe("POST /qrcodes/scan", function () {
         it("create and add a new scanned code", function (done) {
             chai.request(app)
-                .post("/scannedcodes")
+                .post("/qrcodes/scan")
                 .set('content-type', 'application/json')
                 .send(config.testAddScannedCode)
                 .end((err, res) => {
@@ -70,7 +70,7 @@ describe("Tests related to the endpoint /scannedcodes", () => {
 
         it("create and add a new scanned code with citizen_id not in db should fail", function (done) {
             chai.request(app)
-                .post("/scannedcodes")
+                .post("/qrcodes/scan")
                 .set('content-type', 'application/json')
                 .send(config.testAddScannedCodeNotInDb)
                 .end((err, res) => {

@@ -147,11 +147,11 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
         });
     });
 
-    describe("Testing endpoint /scannedcodes", function() {
-        it("adds locations using POST /scannedcodes", function(done) {
+    describe("Testing endpoint /qrcodes/scan", function() {
+        it("adds locations using POST /qrcodes/scan", function(done) {
             config.scans.forEach(function (scan){
                 chai.request(app)
-                    .post("/scannedcodes")
+                    .post("/qrcodes/scan")
                     .set('content-type', 'application/json')
                     .send(scan)
                     .end((err, res) => {

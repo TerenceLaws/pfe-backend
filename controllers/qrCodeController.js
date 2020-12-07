@@ -77,35 +77,31 @@ exports.qrcode_find_by_facility_id = function(req, res) {
  *  2) NON-DOCTOR QR:  Adds a new entry to scannedcodes notifing citizen_id scanned a code.
  */
 exports.qrcode_scan = function (req, res){
-    QRCode.find({_id: req.body.qrcode_id}).then(result => {
-        if(result[0].doctor_id !== null)
-            notifyRisk(req, res)
-        else if(result[0].location_id !== null)
-            logToScannedCodes(req, res)
-        else
-            res.sendStatus(400)
-    })
-    .catch(err => {
-        if (process.env.NODE_ENV === "dev") console.error(err)
-        res.sendStatus(500)
-    })
+    QRCode.find({_id: req.body.qrcode_id})
+        .then(result => {
+
+            //if(result[0].doctor_id !== undefined && result[0].doctor_id !== null)
+                //notifyRisk(req)
+
+            new ScannedCode({
+                citizen_id: req.body.citizen_id,
+                qrcode_id: req.body.qrcode_id
+            })
+            .save()
+            .then(() => {
+                res.sendStatus(200)
+            })
+            .catch(err => {
+                if (process.env.NODE_ENV === "dev") console.error(err)
+                res.sendStatus(500)
+            })
+        })
+        .catch(err => {
+            if (process.env.NODE_ENV === "dev") console.error(err)
+            res.sendStatus(500)
+        })
 }
 
-const notifyRisk = (req, res) => {
-    res.sendStatus(200)
-}
+const notifyRisk = (req) => {
 
-const logToScannedCodes = (req, res) => {
-    new ScannedCode({
-        citizen_id: req.body.citizen_id,
-        qrcode_id: req.body.qrcode_id
-    })
-    .save()
-    .then(() => {
-        res.sendStatus(200)
-    })
-    .catch(err => {
-        if (process.env.NODE_ENV === "dev") console.error(err)
-        res.sendStatus(500)
-    })
 }
