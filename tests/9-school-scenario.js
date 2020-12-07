@@ -19,12 +19,24 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
     before(function (done) {
         // Clear DB from all data
         Citizen.collection.deleteMany({})
-        Professional.collection.deleteMany({})
-        FacilityLocation.collection.deleteMany({})
-        QRCode.collection.deleteMany({})
-        ScannedCode.collection.deleteMany({})
-
-        done()
+        .then(() => {
+            return Professional.collection.deleteMany({})
+        })
+        .then(() => {
+            return FacilityLocation.collection.deleteMany({})
+        })
+        .then(() => {
+            return QRCode.collection.deleteMany({})
+        })
+        .then(() => {
+            return ScannedCode.collection.deleteMany({})
+        })
+        .then(() => {
+            done()
+        })
+        .catch(err => {
+            console.error(err)
+        })
     });
 
     describe("Testing endpoint /citizens", function() {

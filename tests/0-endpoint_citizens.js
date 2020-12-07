@@ -15,14 +15,14 @@ describe("Tests related to the endpoint /citizens", () => {
     before(function(done) {
         // Clear DB from all citizens
          Citizen.collection.deleteMany({})
-
-        // Add initial citizens
-        Citizen.collection.insertMany(config.testCitizens)
-            .then(() => {
-                initialAmountOfCitizens = config.testCitizens.length;
-                done()
-            })
-            .catch((err) => {console.error(err)})
+         .then(() => {
+             return Citizen.collection.insertMany(config.testCitizens)
+         })
+         .then(() => {
+             initialAmountOfCitizens = config.testCitizens.length;
+             done()
+         })
+         .catch((err) => {console.error(err)})
     });
 
     describe("GET /citizens", function() {

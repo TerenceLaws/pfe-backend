@@ -16,16 +16,16 @@ describe("Tests related to the endpoint /qrcodes", () => {
     before(function (done) {
         // Clear DB from all QRCodes
         QRCode.collection.deleteMany({})
-
-        // Add initial QRCodes
-        QRCode.collection.insertMany(config.testQRCodes)
-            .then(() => {
-                initialAmountOfQRCodes = config.testQRCodes.length;
-                done()
-            })
-            .catch((err) => {
-                console.error(err)
-            })
+        .then(() => {
+            return QRCode.collection.insertMany(config.testQRCodes)
+        })
+        .then(() => {
+            initialAmountOfQRCodes = config.testQRCodes.length;
+            done()
+        })
+        .catch((err) => {
+            console.error(err)
+        })
     })
 
     describe("GET /qrcodes", function () {
