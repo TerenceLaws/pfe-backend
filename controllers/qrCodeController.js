@@ -51,7 +51,6 @@ exports.qrcode_scan = function (req, res){
 }
 
 const notifyRisk = (req, res) => {
-    console.log("NotifyRisk w/", req.body.qrcode_id, req.body.citizen_id)
     res.sendStatus(200)
 }
 

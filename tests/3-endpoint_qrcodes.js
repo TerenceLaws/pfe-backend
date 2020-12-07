@@ -94,7 +94,9 @@ describe("Tests related to the endpoint /qrcodes", () => {
                 .send(config.scanDoctorQRCode)
                 .end((err, res) => {
                     res.should.have.status(200)
-                    // TODO
+
+                    expect(res.body).to.be.a('array')
+
                     done()
                 })
         })
