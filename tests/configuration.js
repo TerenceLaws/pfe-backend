@@ -58,7 +58,7 @@ const professionalRegisterUsedMail = {
 // Location-related Config
 const testLocations = [
     new FacilityLocation({
-        facility_id: testAddProfessional._id,
+        facility_id: testProfessionals[0]._id,
         name: "Location Alpha",
         description: "Description for Location Alpha",
         interval: "1h"
@@ -103,7 +103,7 @@ const scanDoctorQRCode = {
 
 // QRcodes for location => testLocations[0]._id
 // Location from facility => testAddProfessional[0]
-const testFacilityQRCodesURL = testAddProfessional._id
+const testFacilityQRCodesURL = testProfessionals[0]._id
 
 // ScannedCodes-related Config
 const testScannedCodes = [

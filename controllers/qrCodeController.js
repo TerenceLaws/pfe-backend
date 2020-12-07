@@ -31,9 +31,46 @@ exports.qrcode_insert = function(req, res) {
     })
 }
 
+/*
+ * qrcode_find_by_facility_id, lists all QR codes linked to a facilitie's id
+ * Gets the id from the link
+ * Return: array of JSON with all the QR Codes or empty if there's none
+ */
 exports.qrcode_find_by_facility_id = function(req, res) {
- //TODO
+    let facilityQRCodes = []
+    let locationsIds = []
+
+    // Get all location linked to the facility_id we received
+    Location.find({facility_id: req.params.id})
+        .then(result => {
+            if(result.length === 0) {
+                res.json([]).status(200).end()
+            } else {
+                for(let i = 0; i < result.length; i++) {
+                    locationsIds.push(result[i]._id)
+                }
+                // Find all qrcode in the facility based on their location_id
+                QRCode.find({'location_id': { $in: locationsIds }}).then(qrcode => {
+                    if(qrcode.length !== 0) {
+                        for (let j = 0; j < qrcode.length; j++) {
+                            facilityQRCodes.push(qrcode[j])
+                        }
+                    }
+                    if(facilityQRCodes.length === 0) res.json([]).status(200).end()
+                    else res.json(facilityQRCodes).status(200).end()
+                })
+                    .catch(err => {
+                        if(process.env.NODE_ENV === "dev") console.error(err)
+                        res.sendStatus(500)
+                    })
+            }
+        })
+        .catch(err => {
+            if(process.env.NODE_ENV === "dev") console.error(err)
+            res.sendStatus(500)
+        })
 }
+
 /*
  * qrcode_scan scans a QR Code, and either
  *  1) DOCTOR-MADE QR: Notifies everyone that got in contact w/ this patient that tested positive

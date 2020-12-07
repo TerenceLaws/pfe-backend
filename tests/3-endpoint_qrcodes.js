@@ -12,8 +12,6 @@ chai.should()
 
 describe("Tests related to the endpoint /qrcodes", () => {
     let initialAmountOfQRCodes
-describe("Tests related to the endpoint /qrcodes", () => {
-    let initialAmountOfQRCodes
 
     before(function (done) {
         // Clear DB from all QRCodes
