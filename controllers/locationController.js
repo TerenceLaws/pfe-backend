@@ -24,7 +24,7 @@ exports.location_create = function (req, res) {
         facility_id: req.body.facility_id,
         name: req.body.name,
         description: req.body.description,
-        interval: req.body.interval
+        avg_time: req.body.avg_time
     })
     .save()
     .then(location => {

@@ -1,6 +1,6 @@
 const app = require("../src");
 const FacilityLocation = require("../models/location")
-const config = require("./configuration");
+const config = require("./endpoint_configuration");
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")

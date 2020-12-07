@@ -1,6 +1,6 @@
 const app = require("../src");
 const ScannedCode = require("../models/scannedCode")
-const config = require("./configuration");
+const config = require("./endpoint_configuration");
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")
