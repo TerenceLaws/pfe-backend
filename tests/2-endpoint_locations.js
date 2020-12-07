@@ -1,6 +1,6 @@
 const app = require("../src");
 const FacilityLocation = require("../models/location")
-const config = require("./configuration");
+const config = require("./endpoint_configuration");
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")
@@ -15,14 +15,14 @@ describe("Tests related to the endpoint /professionals/locations", () => {
     before(function (done) {
         // Clear DB from all Locations
         FacilityLocation.collection.deleteMany({})
-
-        // Add initial Locations
-        FacilityLocation.collection.insertMany(config.testLocations)
-            .then(() => {
-                initialAmountOfLocations = config.testLocations.length;
-                done()
-            })
-            .catch((err) => {console.error(err)})
+        .then(() => {
+            return FacilityLocation.collection.insertMany(config.testLocations)
+        })
+        .then(() => {
+            initialAmountOfLocations = config.testLocations.length;
+            done()
+        })
+        .catch((err) => {console.error(err)})
     });
 
     describe("GET /professionals/locations", function () {

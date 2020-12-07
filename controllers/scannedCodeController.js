@@ -14,12 +14,3 @@ exports.scanned_code_list = function (req, res){
             res.sendStatus(500)
         })
 }
-
-/*
- * scanned_code_insert either
- *  1) There ain't any scanned codes for today => simply insert a new scanned code
- *  2) There is already a scanned code for today => If timestamp_enter === timestamp_exit, replace timestamp_exit with Date.now()
- */
-exports.scanned_code_insert = function (req, res) {
-
-}

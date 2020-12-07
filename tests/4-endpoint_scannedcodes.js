@@ -1,6 +1,6 @@
 const app = require("../src");
 const ScannedCode = require("../models/scannedCode")
-const config = require("./configuration");
+const config = require("./endpoint_configuration");
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")
@@ -15,16 +15,16 @@ describe("Tests related to the endpoint /scannedcodes", () => {
     before(function(done) {
         // Clear DB from all scannedcodes
         ScannedCode.collection.deleteMany({})
-
-        // Add initial ScannedCodes
-        ScannedCode.collection.insertMany(config.testScannedCodes)
-            .then(() => {
-                initialAmountOfScannedCodes = config.testScannedCodes.length
-                done()
-            })
-            .catch((err) => {
-                console.error(err)
-            })
+        .then(() => {
+            return ScannedCode.collection.insertMany(config.testScannedCodes)
+        })
+        .then(() => {
+            initialAmountOfScannedCodes = config.testScannedCodes.length
+            done()
+        })
+        .catch((err) => {
+            console.error(err)
+        })
     })
 
     describe("GET /scannedcodes", function() {
@@ -42,10 +42,10 @@ describe("Tests related to the endpoint /scannedcodes", () => {
         })
     })
 
-    describe("POST /scannedcodes", function () {
+    describe("POST /qrcodes/scan", function () {
         it("create and add a new scanned code", function (done) {
             chai.request(app)
-                .post("/scannedcodes")
+                .post("/qrcodes/scan")
                 .set('content-type', 'application/json')
                 .send(config.testAddScannedCode)
                 .end((err, res) => {
@@ -70,7 +70,7 @@ describe("Tests related to the endpoint /scannedcodes", () => {
 
         it("create and add a new scanned code with citizen_id not in db should fail", function (done) {
             chai.request(app)
-                .post("/scannedcodes")
+                .post("/qrcodes/scan")
                 .set('content-type', 'application/json')
                 .send(config.testAddScannedCodeNotInDb)
                 .end((err, res) => {

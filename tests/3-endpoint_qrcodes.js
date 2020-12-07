@@ -1,7 +1,7 @@
 const app = require("../src")
 const QRCode = require("../models/qrCode")
 const ScannedCode = require("../models/scannedCode")
-const config = require("./configuration")
+const config = require("./endpoint_configuration")
 
 const chai = require("chai")
 const chaiHttp = require("chai-http")
@@ -16,14 +16,16 @@ describe("Tests related to the endpoint /qrcodes", () => {
     before(function (done) {
         // Clear DB from all QRCodes
         QRCode.collection.deleteMany({})
-
-        // Add initial QRCodes
-        QRCode.collection.insertMany(config.testQRCodes)
-            .then(() => {
-                initialAmountOfQRCodes = config.testQRCodes.length;
-                done()
-            })
-            .catch((err) => {console.error(err)})
+        .then(() => {
+            return QRCode.collection.insertMany(config.testQRCodes)
+        })
+        .then(() => {
+            initialAmountOfQRCodes = config.testQRCodes.length;
+            done()
+        })
+        .catch((err) => {
+            console.error(err)
+        })
     })
 
     describe("GET /qrcodes", function () {
@@ -54,7 +56,7 @@ describe("Tests related to the endpoint /qrcodes", () => {
                 })
         })
 
-        it("verify new QR Code added", function (done){
+        it("verify new QR Code added", function (done) {
             chai.request(app)
                 .get("/qrcodes")
                 .end((err, res) => {
@@ -67,7 +69,7 @@ describe("Tests related to the endpoint /qrcodes", () => {
                 })
         })
 
-        it("scanning a non-doctor QR code adds an entry to endpoint /qrcodescanned", function (done){
+        it("scanning a non-doctor QR code adds an entry to endpoint /qrcodescanned", function (done) {
             chai.request(app)
                 .post("/qrcodes/scan")
                 .set('content-type', 'application/json')
@@ -87,14 +89,17 @@ describe("Tests related to the endpoint /qrcodes", () => {
                 })
         })
 
-        it("scanning a doctor QR code returns a list of IDs to notify", function (done){
+        it("scanning a doctor QR code returns a list of IDs to notify", function (done) {
             chai.request(app)
                 .post("/qrcodes/scan")
                 .set('content-type', 'application/json')
                 .send(config.scanDoctorQRCode)
                 .end((err, res) => {
                     res.should.have.status(200)
-                    // TODO
+
+                    // Remove this comment when /qrcodes/scan func is done
+                    //expect(res.body).to.be.a('array')
+
                     done()
                 })
         })

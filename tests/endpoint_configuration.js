@@ -61,13 +61,13 @@ const testLocations = [
         facility_id: testProfessionals[0]._id,
         name: "Location Alpha",
         description: "Description for Location Alpha",
-        interval: "1h"
+        avg_time: "1h"
     }),
     new FacilityLocation({
         facility_id: testProfessionals[0]._id,
         name: "Location Zulu",
         description: "Description for Location Zulu",
-        interval: "2h"
+        avg_time: "2h"
     })
 ]
 const testAddLocation = {

@@ -1,6 +1,6 @@
 const app = require("../src");
 const Professional = require("../models/professional")
-const config = require("./configuration");
+const config = require("./endpoint_configuration");
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")
@@ -15,16 +15,16 @@ describe("Tests related to the endpoint /professionals", () => {
     before(function(done) {
         // Clear DB from all professionals
         Professional.collection.deleteMany({})
-
-        // Add 2 initial, default professionals
-        Professional.collection.insertMany(config.testProfessionals)
-            .then(() => {
-                initialAmountOfProfessionals = config.testProfessionals.length
-                done()
-            })
-            .catch(err => {
-                return console.error(err)
-            })
+        .then(() => {
+            return Professional.collection.insertMany(config.testProfessionals)
+        })
+        .then(() => {
+            initialAmountOfProfessionals = config.testProfessionals.length
+            done()
+        })
+        .catch(err => {
+            return console.error(err)
+        })
     })
 
     describe("GET /professionals", function() {
