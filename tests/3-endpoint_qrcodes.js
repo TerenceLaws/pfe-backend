@@ -1,17 +1,19 @@
-const app = require("../src");
+const app = require("../src")
 const QRCode = require("../models/qrCode")
 const ScannedCode = require("../models/scannedCode")
 const config = require("./configuration")
 
-const chai = require("chai");
+const chai = require("chai")
 const chaiHttp = require("chai-http")
-const expect = chai.expect;
+const expect = chai.expect
 
 chai.use(chaiHttp)
-chai.should();
+chai.should()
 
 describe("Tests related to the endpoint /qrcodes", () => {
-    let initialAmountOfQRCodes;
+    let initialAmountOfQRCodes
+describe("Tests related to the endpoint /qrcodes", () => {
+    let initialAmountOfQRCodes
 
     before(function (done) {
         // Clear DB from all QRCodes
@@ -24,7 +26,7 @@ describe("Tests related to the endpoint /qrcodes", () => {
                 done()
             })
             .catch((err) => {console.error(err)})
-    });
+    })
 
     describe("GET /qrcodes", function () {
         it("return a list of all QR Codes", function (done) {
@@ -38,8 +40,8 @@ describe("Tests related to the endpoint /qrcodes", () => {
 
                     done()
                 })
-        });
-    });
+        })
+    })
 
     describe("POST /qrcodes", function () {
         it("create and add new QR Code", function (done) {

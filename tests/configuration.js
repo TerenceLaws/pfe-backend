@@ -58,13 +58,13 @@ const professionalRegisterUsedMail = {
 // Location-related Config
 const testLocations = [
     new FacilityLocation({
-        facility_id: "123",
+        facility_id: testAddProfessional._id,
         name: "Location Alpha",
         description: "Description for Location Alpha",
         interval: "1h"
     }),
     new FacilityLocation({
-        facility_id: "456",
+        facility_id: testProfessionals[0]._id,
         name: "Location Zulu",
         description: "Description for Location Zulu",
         interval: "2h"
@@ -100,6 +100,10 @@ const scanDoctorQRCode = {
     qrcode_id: testQRCodes[1]._id,
     citizen_id: testCitizens[0]._id
 }
+
+// QRcodes for location => testLocations[0]._id
+// Location from facility => testAddProfessional[0]
+const testFacilityQRCodesURL = testAddProfessional._id
 
 // ScannedCodes-related Config
 const testScannedCodes = [
@@ -139,6 +143,7 @@ module.exports = {
     testAddQRCode,
     scanNonDoctorQRCode,
     scanDoctorQRCode,
+    testFacilityQRCodesURL,
 
     testScannedCodes,
     testAddScannedCode,

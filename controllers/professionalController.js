@@ -42,14 +42,17 @@ exports.professional_login = function(req, res){
                              }
                              res.json(result).status(200).end()
                          }
-                     })
+                    })
                      .catch(err => {
                          if(process.env.NODE_ENV === "dev") console.error(err)
                          res.sendStatus(500)
                      })
-             }
+         }
      })
-    //.catch()
+        .catch(err => {
+            if(process.env.NODE_ENV === "dev") console.error(err)
+            res.sendStatus(500)
+        })
 }
 
 /*
@@ -66,7 +69,7 @@ exports.professional_register = function(req, res) {
                     .then(hash => {
                         new Professional({
                             name: req.body.name,
-                            address: req.body.name,
+                            address: req.body.address,
                             mail: req.body.mail,
                             password: hash,
                             is_doctor: req.body.is_doctor

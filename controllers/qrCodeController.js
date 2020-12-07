@@ -1,4 +1,5 @@
 const QRCode = require("../models/qrCode")
+const Location = require("../models/location")
 const ScannedCode = require("../models/scannedCode")
 
 /*
@@ -7,7 +8,7 @@ const ScannedCode = require("../models/scannedCode")
  */
 exports.qrcode_list = function (req, res){
     QRCode.find({}).then(result => {
-        return res.json(result)
+        return res.json(result).status(200).end()
     })
 }
 
@@ -30,6 +31,9 @@ exports.qrcode_insert = function(req, res) {
     })
 }
 
+exports.qrcode_find_by_facility_id = function(req, res) {
+ //TODO
+}
 /*
  * qrcode_scan scans a QR Code, and either
  *  1) DOCTOR-MADE QR: Notifies everyone that got in contact w/ this patient that tested positive
