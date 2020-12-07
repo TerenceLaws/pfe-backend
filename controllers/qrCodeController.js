@@ -101,7 +101,3 @@ exports.qrcode_scan = function (req, res){
             res.sendStatus(500)
         })
 }
-
-const notifyRisk = (req) => {
-
-}
