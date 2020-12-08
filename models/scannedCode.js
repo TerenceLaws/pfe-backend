@@ -3,7 +3,8 @@ const mongoose = require("../src/mongodb")
 const scannedCodeSchema = new mongoose.Schema({
     citizen_id: {type: mongoose.ObjectId, ref: 'Citizen', required: [true, 'a citizen\'s reference is required']},
     qrcode_id: {type: mongoose.ObjectId, ref: 'QrCode', required: [true, 'a qr code\'s reference is required']},
-    date_time: {type: Date, default: Date.now()}
+    entry_date: {type: Date, default: Date.now()},
+    exit_date: {type: Date, default: null}
 })
 
 scannedCodeSchema.set('toJSON', {

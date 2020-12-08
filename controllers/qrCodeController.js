@@ -74,27 +74,58 @@ exports.qrcode_find_by_facility_id = function(req, res) {
 /*
  * qrcode_scan scans a QR Code, and either
  *  1) DOCTOR-MADE QR: Notifies everyone that got in contact w/ this patient that tested positive
- *  2) NON-DOCTOR QR:  Adds a new entry to scannedcodes notifing citizen_id scanned a code.
+ *  2) NON-DOCTOR QR:  Adds a new entry to scannedcodes notifying citizen_id scanned a code.
  */
 exports.qrcode_scan = function (req, res){
+
+    const citizenId = req.body.citizen_id
+    const qrcodeId = req.body.qrcode_id
+
+    // Check if the qr codes is a doctor's one or a facility's one
     QRCode.find({_id: req.body.qrcode_id})
         .then(result => {
 
             //if(result[0].doctor_id !== undefined && result[0].doctor_id !== null)
-                //notifyRisk(req)
+            //notifyRisk(req)
 
-            new ScannedCode({
-                citizen_id: req.body.citizen_id,
-                qrcode_id: req.body.qrcode_id
-            })
-            .save()
-            .then(() => {
-                res.sendStatus(200)
-            })
-            .catch(err => {
-                if (process.env.NODE_ENV === "dev") console.error(err)
-                res.sendStatus(500)
-            })
+            // Find all scanned codes by this citizen to check if he entered a building today
+            // To update exit time if necessary
+            ScannedCode.find({citizen_id: citizenId, qrcode_id: qrcodeId})
+                .then(result => {
+                    if(result.length !== 0) {
+                        let isExitScan = false
+                        // Check if one of these results don't have an exit time
+                        for(let i = 0; i < result.length; i++) {
+                            if(result[i].timestamp_exit === null) {
+                                isExitScan = true
+                                ScannedCode.updateOne({_id: result[i]._id}, {timestamp_exit: Date.now()})
+                                    .then(res.sendStatus(200))
+                                    .catch(err => {
+                                        if(process.env.NODE_ENV === "dev") console.error(err)
+                                        res.sendStatus(500)
+                                    })
+                            }
+                        }
+                    }
+                        // It is his first ever scan => insert in the db
+                        new ScannedCode(
+                            {
+                                citizen_id: citizenId,
+                                qrcode_id: qrcodeId,
+                            })
+                            .save()
+                            .then(() => {
+                                res.sendStatus(200)
+                            })
+                            .catch(err => {
+                                if (process.env.NODE_ENV === "dev") console.error(err)
+                                res.sendStatus(500)
+                            })
+                })
+                .catch(err => {
+                    if(process.env.NODE_ENV === "dev") console.error(err)
+                    res.sendStatus(500)
+                })
         })
         .catch(err => {
             if (process.env.NODE_ENV === "dev") console.error(err)
