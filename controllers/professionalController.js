@@ -38,9 +38,6 @@ exports.professional_login = function(req, res){
                              for(let i=0; i<result.length; i++){
                                  result[i].password = undefined
                              }
-                             for(let i=0; i<result.length; i++){
-                                 result[i].password = undefined
-                             }
                              res.json({
                                  result:result,
                                  token : jwt.sign(
