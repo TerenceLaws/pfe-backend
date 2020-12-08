@@ -101,3 +101,51 @@ exports.qrcode_scan = function (req, res){
             res.sendStatus(500)
         })
 }
+
+const notifyRisk = (req, res) => {
+    const limitDate = new Date(new Date().getTime() - (10 * 24 * 60 * 60 * 1000))
+    console.log("Date Limite de recherche: ",limitDate)
+
+    let infected_scans = new Map() //"qrcode_id", [[enter_date, exit_date], [enter_date, exit_date]]
+
+    ScannedCode
+        .find({
+            citizen_id: req.body.citizen_id,
+            entry_date: { $gte: limitDate}
+        })
+        .then(result => {
+            let data
+            for(let scan in result){
+                if(infected_scans.has(scan.qrcode_id)) {
+                    data = infected_scans.get(scan.qrcode_id)
+                    data.push([scan.entry_date, scan.exit_date])
+                } else {
+                    data = [[scan.entry_date, scan.exit_date]]
+                }
+
+                infected_scans.set(scan.qrcode_id, data)
+                console.log("Added data to infected_scans", scan.qrcode_id, data, infected_scans.get(scan.qrcode_id))
+            }
+        })
+
+    console.log("InfectedScans keys", infected_scans.keys())
+
+    ScannedCode
+        .find({
+            qrcode_id: { $in: infected_scans.keys()},
+            citizen_id: { $ne: req.body.citizen_id},
+            exit_date: { $gte: limitDate}
+        })
+        .then(result => {
+            console.log("Result of Find Query on ScannedCodes",result)
+            //for(victim_id in result)
+            // if(crossedPaths())
+        })
+
+    res.sendStatus(200)
+}
+
+const crossedPaths = (infected_entry, infected_exit, victim_entry, victim_exit) => {
+    //infected_entry || infected_exit between(victim_entry, victim_exit)
+    return false;
+}
