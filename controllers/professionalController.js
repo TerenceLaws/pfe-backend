@@ -1,5 +1,6 @@
 const Professional = require("../models/professional")
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const SALT = 10
 
 /*
@@ -40,7 +41,14 @@ exports.professional_login = function(req, res){
                              for(let i=0; i<result.length; i++){
                                  result[i].password = undefined
                              }
-                             res.json(result).status(200).end()
+                             res.json({
+                                 result:result,
+                                 token : jwt.sign(
+                                     {id : result._id},
+                                     "My_secret_jwt_token",
+                                     {expiresIn : '24h'}
+                                     )
+                             }).status(200).end()
                          }
                     })
                      .catch(err => {
