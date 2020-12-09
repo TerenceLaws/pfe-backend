@@ -191,8 +191,6 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
                 .end((err, res) => {
                     res.should.have.status(200)
 
-                    //console.log("9-school-scenario last test data", res.body[0])
-
                     expect(res.body).to.be.a('array')
                     expect(res.body).to.have.lengthOf(config.expectedUniqueScanLogs)
 
