@@ -22,7 +22,7 @@ let updateExitTimes = schedule.scheduleJob('0 0 * * *', () => {
     let new_exit_date
 
     // Get all scanned codes to check if there are some without an exit date to update it
-    ScannedCode.find({}).exec().then(scans => {
+    Scan.find({}).exec().then(scans => {
         for(let i = 0; i < scans.length(); i++) {
             if(scans[i].exit_date === null) {
                 // Get the average_time of this scan to update the exit_date
