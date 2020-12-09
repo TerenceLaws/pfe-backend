@@ -175,8 +175,9 @@ const notifyRisk = (req, res) => {
                 to_notify.add(scan.citizen_id)
         }
 
-        console.log("everyone that got in contact are", to_notify)
-        res.json(to_notify).status(200).end()
+        // TODO: SEND NOTIFICATION TO ALL CITIZENS W/ID IN to_notify
+
+        res.status(200).end()
     })
     .catch(err => {
         if(process.env.NODE_ENV === "dev") console.error(err)
