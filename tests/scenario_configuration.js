@@ -15,23 +15,36 @@ const Citizen = require("../models/citizen")
 const Professional = require("../models/professional")
 const FacilityLocation = require("../models/location")
 const QRCode = require("../models/qrCode")
+const Scan = require("../models/scan")
+const mongoose = require("mongoose")
 
 const citizens = [
-    new Citizen({}),    // 0: Jessica
-    new Citizen({}),    // 1: Marco
-    new Citizen({}),    // 2: Jean
-    new Citizen({}),    // 3: Thomas
-    new Citizen({})     // 4: Hilde
+    new Citizen({
+        id: mongoose.Types.ObjectId()
+    }),    // 0: Jessica
+    new Citizen({
+        id: mongoose.Types.ObjectId()
+    }),    // 1: Marco
+    new Citizen({
+        id: mongoose.Types.ObjectId()
+    }),    // 2: Jean
+    new Citizen({
+        id: mongoose.Types.ObjectId()
+    }),    // 3: Thomas
+    new Citizen({
+        id: mongoose.Types.ObjectId()
+    }),    // 4: Hilde
 ]
 
-const jessica = citizens[0]._id
-const marco = citizens[1]._id
-const jean = citizens[2]._id
-const thomas = citizens[3]._id
-const hilde = citizens[4]._id
+const jessica = citizens[0].id
+const marco = citizens[1].id
+const jean = citizens[2].id
+const thomas = citizens[3].id
+const hilde = citizens[4].id
 
 const professionals = [
     new Professional({
+        id: mongoose.Types.ObjectId(),
         name: "Institut Paul-Lambin",
         address: "Clos Chapelle-aux-Champs, 43",
         mail: "support@vinci.be",
@@ -39,6 +52,7 @@ const professionals = [
         is_doctor: false
     }),
     new Professional({
+        id: mongoose.Types.ObjectId(),
         name: "Dr. Jacques",
         address: "Rue de la medecine, 20",
         mail: "dr.jacques@mail.be",
@@ -49,13 +63,15 @@ const professionals = [
 
 const locations = [
     new FacilityLocation({
-        facility_id: professionals[0]._id,
+        id: mongoose.Types.ObjectId(),
+        facility_id: professionals[0].id,
         name: "Local 27",
         description: "Le fameux local 27 de l'IPL.",
         avg_time: "1h"
     }),
     new FacilityLocation({
-        facility_id: professionals[0]._id,
+        id: mongoose.Types.ObjectId(),
+        facility_id: professionals[0].id,
         name: "Local 28",
         description: "Le petit local 28 de l'IPL.",
         avg_time: "2h"
@@ -64,121 +80,127 @@ const locations = [
 
 const qrcodes = [
     new QRCode({
-        doctor_id: professionals[1]._id,
+        id: mongoose.Types.ObjectId(),
+        doctor_id: professionals[1].id,
         location_id: null
     }),
     new QRCode({
+        id: mongoose.Types.ObjectId(),
         doctor_id: null,
-        location_id: locations[0]._id
+        location_id: locations[0].id
     }),
     new QRCode({
+        id: mongoose.Types.ObjectId(),
         doctor_id: null,
-        location_id: locations[0]._id
+        location_id: locations[0].id
     })
 ]
 
-const qrcode_doctor = qrcodes[0]._id
-const qrcode_local27 = qrcodes[1]._id
-const qrcode_local28 = qrcodes[2]._id
+const qrcode_doctor = qrcodes[0].id
+const qrcode_local27 = qrcodes[1].id
+const qrcode_local28 = qrcodes[2].id
 
 const scans = [
     //////////////////////////////////////////////////////////////
     //                          JEAN                            //
     //////////////////////////////////////////////////////////////
-    {
+    new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local27,
-        date_time: Date.UTC(2020, 1, 1, 8, 30)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 8, 30)
+    }),
+    new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local27,
-        date_time: Date.UTC(2020, 1, 1, 10, 30)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 10, 30)
+    }),
+    new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local28,
-        date_time: Date.UTC(2020, 1, 1, 12)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 12)
+    }),
+    new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local28,
-        date_time: Date.UTC(2020, 1, 1, 14)
-    },
+        scan_date: Date.UTC(2020, 1, 1, 14)
+    }),
 
     //////////////////////////////////////////////////////////////
     //                         HILDE                            //
     //////////////////////////////////////////////////////////////
-    {
+    new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local28,
-        date_time: Date.UTC(2020, 1, 1, 8, 30)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 8, 30)
+    }),
+    new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local28,
-        date_time: Date.UTC(2020, 1, 1, 10, 30)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 10, 30)
+    }),
+    new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local27,
-        date_time: Date.UTC(2020, 1, 1, 12)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 12)
+    }),
+    new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local27,
-        date_time: Date.UTC(2020, 1, 1, 14)
-    },
+        scan_date: Date.UTC(2020, 1, 1, 14)
+    }),
 
     //////////////////////////////////////////////////////////////
     //                    JESSICA ET MARCO                      //
     //////////////////////////////////////////////////////////////
-    {
+    new Scan({
         citizen_id: jessica,
         qrcode_id: qrcode_local28,
-        date_time: Date.UTC(2020, 1, 1, 12)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 12)
+    }),
+    new Scan({
         citizen_id: jessica,
         qrcode_id: qrcode_local28,
-        date_time: Date.UTC(2020, 1, 1, 14)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 14)
+    }),
+    new Scan({
         citizen_id: marco,
         qrcode_id: qrcode_local28,
-        date_time: Date.UTC(2020, 1, 1, 12)
-    },
+        scan_date: Date.UTC(2020, 1, 1, 12)
+    }),
 
     //////////////////////////////////////////////////////////////
     //                          THOMAS                          //
     //////////////////////////////////////////////////////////////
-    {
+    new Scan({
         citizen_id: thomas,
         qrcode_id: qrcode_local27,
-        date_time: Date.UTC(2020, 1, 1, 10)
-    },
-    {
+        scan_date: Date.UTC(2020, 1, 1, 10)
+    }),
+    new Scan({
         citizen_id: thomas,
         qrcode_id: qrcode_local27,
-        date_time: Date.UTC(2020, 1, 1, 12)
-    },
+        scan_date: Date.UTC(2020, 1, 1, 12)
+    }),
 
     //////////////////////////////////////////////////////////////
     // Jean gets his results back at the doctor's office        //
     //////////////////////////////////////////////////////////////
-    {
+    new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_doctor,
-        date_time: Date.UTC(2020, 1, 1, 20)
-    },
+        scan_date: Date.UTC(2020, 1, 1, 20)
+    })
 ]
+
+const expectedUniqueScanLogs = 7
 
 module.exports = {
     citizens,
     professionals,
     locations,
     qrcodes,
-    scans
+    scans,
+    expectedUniqueScanLogs
 }
 
 

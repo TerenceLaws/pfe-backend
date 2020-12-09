@@ -1,6 +1,7 @@
 const mongoose = require("../src/mongodb")
 
 const professionalSchema = new mongoose.Schema({
+    id: {type: mongoose.ObjectId, required: [true, 'an ID is required']},
     name: {type: String, required: [true, 'a name is required']},
     address: {type: String, required: [true, 'an address is required']},
     mail: {type: String, required: [true, 'an email address is required']},
@@ -11,6 +12,7 @@ const professionalSchema = new mongoose.Schema({
 professionalSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         delete returnedObject.__v
+        delete returnedObject._id
     }
 })
 

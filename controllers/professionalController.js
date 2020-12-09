@@ -1,4 +1,5 @@
 const Professional = require("../models/professional")
+const mongoose = require("mongoose")
 const bcrypt = require('bcrypt')
 const SALT = 10
 
@@ -7,7 +8,7 @@ const SALT = 10
  * Return: array of JSON objects representing all db professionals
  */
 exports.professional_list = function (req, res){
-    Professional.find({}).then(result => {
+    Professional.find({}).exec().then(result => {
         for(let i=0; i<result.length; i++){
             result[i].password = undefined
         }
@@ -24,7 +25,7 @@ function hash(password){
  * Return: JSON of professional if authenticated, 401 otherwise
  */
 exports.professional_login = function(req, res){
-    Professional.find({mail: req.body.mail})
+    Professional.find({mail: req.body.mail}).exec()
         .then(result => {
              if (result.length === 0) {
                  res.sendStatus(401)
@@ -60,7 +61,7 @@ exports.professional_login = function(req, res){
  * Return: status 200 if success, 409 if mail already in db
  */
 exports.professional_register = function(req, res) {
-    Professional.find({mail: req.body.mail})
+    Professional.find({mail: req.body.mail}).exec()
         .then(result => {
             if(result.length !== 0){
                 res.sendStatus(409)
@@ -68,6 +69,7 @@ exports.professional_register = function(req, res) {
                 hash(req.body.password)
                     .then(hash => {
                         new Professional({
+                            id: req.body.id || mongoose.Types.ObjectId(),
                             name: req.body.name,
                             address: req.body.address,
                             mail: req.body.mail,

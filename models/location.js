@@ -1,6 +1,7 @@
 const mongoose = require("../src/mongodb")
 
 const locationSchema = new mongoose.Schema({
+    id: {type: mongoose.ObjectId, required: [true, 'an ID is required']},
     facility_id: {type: mongoose.ObjectId, ref: 'Facility', required: [true, 'a facility\'s reference is required']},
     name: {type: String, required: [true, 'a name is required']},
     description: {type: String, required: [true, 'a description is required']},
@@ -10,6 +11,7 @@ const locationSchema = new mongoose.Schema({
 locationSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         delete returnedObject.__v
+        delete returnedObject._id
     }
 })
 

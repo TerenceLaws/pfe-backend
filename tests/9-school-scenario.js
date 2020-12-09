@@ -5,7 +5,7 @@ const Citizen = require("../models/citizen")
 const Professional = require("../models/professional")
 const FacilityLocation = require("../models/location")
 const QRCode = require("../models/qrCode")
-const ScannedCode = require("../models/scannedCode")
+const Scan = require("../models/scan")
 
 const chai = require("chai");
 const chaiHttp = require("chai-http")
@@ -29,7 +29,7 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
             return QRCode.collection.deleteMany({})
         })
         .then(() => {
-            return ScannedCode.collection.deleteMany({})
+            return Scan.collection.deleteMany({})
         })
         .then(() => {
             done()
@@ -79,7 +79,7 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
                     .end((err, res) => {
                         res.should.have.status(200)
 
-                        // Call done() only after having added the last citizen.
+                        // Call done() only after having added the last professional.
                         if(professional === config.professionals[config.professionals.length - 1]) done()
                     })
             })
@@ -109,7 +109,7 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
                     .end((err, res) => {
                         res.should.have.status(200)
 
-                        // Call done() only after having added the last citizen.
+                        // Call done() only after having added the last location.
                         if(location === config.locations[config.locations.length - 1]) done()
                     })
             })
@@ -139,7 +139,7 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
                     .end((err, res) => {
                         res.should.have.status(200)
 
-                        // Call done() only after having added the last citizen.
+                        // Call done() only after having added the last qrcode.
                         if(qrcode === config.qrcodes[config.qrcodes.length - 1]) done()
                     })
             })
@@ -160,30 +160,39 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
     });
 
     describe("Testing endpoint /qrcodes/scan", function() {
-        it("adds locations using POST /qrcodes/scan", function(done) {
-            config.scans.forEach(function (scan){
-                chai.request(app)
-                    .post("/qrcodes/scan")
-                    .set('content-type', 'application/json')
-                    .send(scan)
-                    .end((err, res) => {
-                        res.should.have.status(200)
+        it("adds QR Code scans using POST /qrcodes/scan", function(done) {
+            // Change Mocha timeout, this request is longer than others because it performs multiple POSTs.
+            this.timeout(Math.max(config.scans.length * 500, 2000))
+            // Interval at which the POST requests are done. (default: 500)
+            let interval = 500
 
-                        // Call done() only after having added the last citizen.
-                        if(scan === config.scans[config.scans.length - 1]) done()
-                    })
+            config.scans.forEach(function (scan, index){
+                setTimeout(function(){
+                    chai.request(app)
+                        .post("/qrcodes/scan")
+                        .set('content-type', 'application/json')
+                        .send(scan)
+                        .end((err, res) => {
+                            res.should.have.status(200)
+
+                            // Call done() only after having added the last scan.
+                            if(scan === config.scans[config.scans.length - 1]) done()
+                        })
+                }, index*interval)
             })
         });
 
-
         it("checks if added all locations using GET /scannedcodes", function(done) {
+            this.timeout(2000)
             chai.request(app)
                 .get("/scannedcodes")
                 .end((err, res) => {
                     res.should.have.status(200)
 
+                    //console.log("9-school-scenario last test data", res.body[0])
+
                     expect(res.body).to.be.a('array')
-                    expect(res.body).to.have.lengthOf(config.scans.length)
+                    expect(res.body).to.have.lengthOf(config.expectedUniqueScanLogs)
 
                     done()
                 })

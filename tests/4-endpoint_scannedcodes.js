@@ -1,5 +1,5 @@
 const app = require("../src");
-const ScannedCode = require("../models/scannedCode")
+const ScannedCode = require("../models/scan")
 const config = require("./endpoint_configuration");
 
 const chai = require("chai");
@@ -43,7 +43,7 @@ describe("Tests related to the endpoint /scannedcodes", () => {
     })
 
     describe("POST /qrcodes/scan", function () {
-        it("create and add a new scanned code", function (done) {
+        it("adds an exit_date to an already-scanned code", function (done) {
             chai.request(app)
                 .post("/qrcodes/scan")
                 .set('content-type', 'application/json')
@@ -62,7 +62,7 @@ describe("Tests related to the endpoint /scannedcodes", () => {
                     res.should.have.status(200)
 
                     expect(res.body).to.be.a('array')
-                    expect(res.body).to.have.lengthOf(++initialAmountOfScannedCodes)
+                    expect(res.body).to.have.lengthOf(initialAmountOfScannedCodes)
 
                     done()
                 })
