@@ -88,6 +88,7 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
         it("checks if added all professionals using GET /professionals", function(done) {
             chai.request(app)
                 .get("/professionals")
+                .set("authorization" , "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDc1MjY3OTUsImV4cCI6MTYwNzYxMzE5NX0.ViAS_l228_GBob2B3GAUWXvj4dbTCMi7ECdtVapau0w")
                 .end((err, res) => {
                     res.should.have.status(200)
 
@@ -118,6 +119,7 @@ describe("TESTING SCENARIO: SCHOOL & STUDENTS", () => {
         it("checks if added all locations using GET /professionals/locations", function(done) {
             chai.request(app)
                 .get("/professionals/locations")
+                .set("authorization" , "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDc1MjY3OTUsImV4cCI6MTYwNzYxMzE5NX0.ViAS_l228_GBob2B3GAUWXvj4dbTCMi7ECdtVapau0w")
                 .end((err, res) => {
                     res.should.have.status(200)
 
