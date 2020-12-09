@@ -1,4 +1,4 @@
-const ScannedCode = require("../models/scannedCode")
+const Scan = require("../models/scan")
 const QRCode = require("../models/qrCode")
 const Location = require("../models/location")
 const schedule = require('node-schedule')
@@ -8,7 +8,7 @@ const schedule = require('node-schedule')
  * Return: array of JSON objects representing all db scanned codes
  */
 exports.scanned_code_list = function (req, res){
-    ScannedCode.find({})
+    Scan.find({})
         .then(result => {
             res.json(result).status(200).end()
         })

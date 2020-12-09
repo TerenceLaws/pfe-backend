@@ -1,4 +1,5 @@
 const Professional = require("../models/professional")
+const mongoose = require("mongoose")
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const SALT = 10
@@ -8,10 +9,7 @@ const SALT = 10
  * Return: array of JSON objects representing all db professionals
  */
 exports.professional_list = function (req, res){
-    Professional.find({}).then(result => {
-        for(let i=0; i<result.length; i++){
-            result[i].password = undefined
-        }
+    Professional.find({}).select('-__v -password -_id').exec().then(result => {
         res.json(result).status(200).end()
     })
 }
@@ -25,7 +23,7 @@ function hash(password){
  * Return: JSON of professional if authenticated, 401 otherwise
  */
 exports.professional_login = function(req, res){
-    Professional.find({mail: req.body.mail})
+    Professional.find({mail: req.body.mail}).exec()
         .then(result => {
              if (result.length === 0) {
                  res.sendStatus(401)
@@ -38,12 +36,14 @@ exports.professional_login = function(req, res){
                              for(let i=0; i<result.length; i++){
                                  result[i].password = undefined
                              }
-                             res.status(200).set({"authorization": "Bearer "+jwt.sign(
-                                     {id : result._id},
+                             res.status(200).json([
+                                 result,
+                                 jwt.sign(
+                                     {id: result._id},
                                      "My_secret_jwt_token",
-                                     {expiresIn : '24h'}
+                                     {expiresIn: '24h'}
                                  )
-                             }).json(result)
+                             ])
                          }
                     })
                      .catch(err => {
@@ -63,7 +63,7 @@ exports.professional_login = function(req, res){
  * Return: status 200 if success, 409 if mail already in db
  */
 exports.professional_register = function(req, res) {
-    Professional.find({mail: req.body.mail})
+    Professional.find({mail: req.body.mail}).exec()
         .then(result => {
             if(result.length !== 0){
                 res.sendStatus(409)
@@ -71,6 +71,7 @@ exports.professional_register = function(req, res) {
                 hash(req.body.password)
                     .then(hash => {
                         new Professional({
+                            id: req.body.id || mongoose.Types.ObjectId(),
                             name: req.body.name,
                             address: req.body.address,
                             mail: req.body.mail,

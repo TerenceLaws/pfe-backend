@@ -1,6 +1,6 @@
 const app = require("../src")
 const QRCode = require("../models/qrCode")
-const ScannedCode = require("../models/scannedCode")
+const ScannedCode = require("../models/scan")
 const config = require("./endpoint_configuration")
 
 const chai = require("chai")

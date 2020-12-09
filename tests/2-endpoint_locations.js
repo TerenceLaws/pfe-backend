@@ -29,6 +29,7 @@ describe("Tests related to the endpoint /professionals/locations", () => {
         it("return a list of all locations", function (done) {
             chai.request(app)
                 .get("/professionals/locations")
+                .set("authorization" , "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDc1MjY3OTUsImV4cCI6MTYwNzYxMzE5NX0.ViAS_l228_GBob2B3GAUWXvj4dbTCMi7ECdtVapau0w")
                 .end((err, res) => {
                     res.should.have.status(200)
 
@@ -58,6 +59,7 @@ describe("Tests related to the endpoint /professionals/locations", () => {
         it("verify new location added", function (done){
             chai.request(app)
                 .get("/professionals/locations")
+                .set("authorization" , "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDc1MjY3OTUsImV4cCI6MTYwNzYxMzE5NX0.ViAS_l228_GBob2B3GAUWXvj4dbTCMi7ECdtVapau0w")
                 .end((err, res) => {
                     res.should.have.status(200)
 
