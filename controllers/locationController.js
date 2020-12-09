@@ -1,10 +1,13 @@
 const FacilityLocation = require("../models/location")
+const jwt = require("jsonwebtoken")
 
 /*
  * location_list returns all facility locations in db
  * Return: array of JSON objects representing all db facility locations
  */
 exports.location_list = function (req, res){
+
+
     FacilityLocation.find({})
         .then(result => {
             return res.json(result).status(200).end()
@@ -34,4 +37,22 @@ exports.location_create = function (req, res) {
         console.log("Error during location_create", err)
         res.sendStatus(400)
     })
+}
+
+/*
+ * location_list returns all facility locations in db
+ * Return: array of JSON objects representing all db facility locations
+ */
+exports.location_list_by_facility_id = function (req, res){
+    let token= req.headers.authorization;
+    let decodedToken = jwt.verify(token,"My_secret_jwt_token")
+    const facility_id = decodedToken._id;
+    FacilityLocation.find({facility_id : facility_id})
+        .then(result => {
+            return res.json(result).status(200).end()
+        })
+        .catch(err => {
+            console.log("Error during location_list", err)
+            res.sendStatus(400)
+        })
 }
