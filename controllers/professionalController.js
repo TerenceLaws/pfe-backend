@@ -38,7 +38,7 @@ exports.professional_login = function(req, res){
                              for(let i=0; i<result.length; i++){
                                  result[i].password = undefined
                              }
-                             res.status(200).set({"authorization": jwt.sign(
+                             res.status(200).set({"authorization": "Bearer "+jwt.sign(
                                      {id : result._id},
                                      "My_secret_jwt_token",
                                      {expiresIn : '24h'}
