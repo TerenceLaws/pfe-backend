@@ -42,6 +42,12 @@ const jean = citizens[2].id
 const thomas = citizens[3].id
 const hilde = citizens[4].id
 
+console.log("jessica", jessica)
+console.log("marco", marco)
+console.log("jean", jean)
+console.log("thomas", thomas)
+console.log("hilde", hilde)
+
 const professionals = [
     new Professional({
         id: mongoose.Types.ObjectId(),
@@ -107,22 +113,22 @@ const scans = [
     new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local27,
-        scan_date: Date.UTC(2020, 1, 1, 8, 30)
+        entry_date: Date.UTC(2020, 0, 1, 8, 30)
     }),
     new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local27,
-        scan_date: Date.UTC(2020, 1, 1, 10, 30)
+        entry_date: Date.UTC(2020, 0, 1, 10, 30)
     }),
     new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local28,
-        scan_date: Date.UTC(2020, 1, 1, 12)
+        entry_date: Date.UTC(2020, 0, 1, 12)
     }),
     new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_local28,
-        scan_date: Date.UTC(2020, 1, 1, 14)
+        entry_date: Date.UTC(2020, 0, 1, 14)
     }),
 
     //////////////////////////////////////////////////////////////
@@ -131,22 +137,22 @@ const scans = [
     new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local28,
-        scan_date: Date.UTC(2020, 1, 1, 8, 30)
+        entry_date: Date.UTC(2020, 0, 1, 8, 30)
     }),
     new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local28,
-        scan_date: Date.UTC(2020, 1, 1, 10, 30)
+        entry_date: Date.UTC(2020, 0, 1, 10, 30)
     }),
     new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local27,
-        scan_date: Date.UTC(2020, 1, 1, 12)
+        entry_date: Date.UTC(2020, 0, 1, 12)
     }),
     new Scan({
         citizen_id: hilde,
         qrcode_id: qrcode_local27,
-        scan_date: Date.UTC(2020, 1, 1, 14)
+        entry_date: Date.UTC(2020, 0, 1, 14)
     }),
 
     //////////////////////////////////////////////////////////////
@@ -155,17 +161,17 @@ const scans = [
     new Scan({
         citizen_id: jessica,
         qrcode_id: qrcode_local28,
-        scan_date: Date.UTC(2020, 1, 1, 12)
+        entry_date: Date.UTC(2020, 0, 1, 12)
     }),
     new Scan({
         citizen_id: jessica,
         qrcode_id: qrcode_local28,
-        scan_date: Date.UTC(2020, 1, 1, 14)
+        entry_date: Date.UTC(2020, 0, 1, 14)
     }),
     new Scan({
         citizen_id: marco,
         qrcode_id: qrcode_local28,
-        scan_date: Date.UTC(2020, 1, 1, 12)
+        entry_date: Date.UTC(2020, 0, 1, 12)
     }),
 
     //////////////////////////////////////////////////////////////
@@ -174,12 +180,12 @@ const scans = [
     new Scan({
         citizen_id: thomas,
         qrcode_id: qrcode_local27,
-        scan_date: Date.UTC(2020, 1, 1, 10)
+        entry_date: Date.UTC(2020, 0, 1, 10)
     }),
     new Scan({
         citizen_id: thomas,
         qrcode_id: qrcode_local27,
-        scan_date: Date.UTC(2020, 1, 1, 12)
+        entry_date: Date.UTC(2020, 0, 1, 12)
     }),
 
     //////////////////////////////////////////////////////////////
@@ -188,7 +194,7 @@ const scans = [
     new Scan({
         citizen_id: jean,
         qrcode_id: qrcode_doctor,
-        scan_date: Date.UTC(2020, 1, 1, 20)
+        entry_date: Date.UTC(2020, 0, 1, 20)
     })
 ]
 

@@ -100,7 +100,7 @@ exports.qrcode_scan = function (req, res) {
 const logScan = (req, res) => {
     const citizenId = req.body.citizen_id
     const qrcodeId = req.body.qrcode_id
-    const scan_date = req.body.scan_date || Date.now()
+    const scan_date = (req.body.entry_date !== undefined) ? new Date(req.body.entry_date) : Date.now()
 
     Scan.find({
         citizen_id: citizenId,
@@ -126,15 +126,15 @@ const logScan = (req, res) => {
     })
     .catch(err => {
         if(process.env.NODE_ENV === "dev") console.error(err)
-        console.log("GOT AN ERROR IN LOGSCAN", err)
         res.sendStatus(500)
     })
 }
 
 const notifyRisk = (req, res) => {
-    const limitDate = new Date(new Date().getTime() - (10 * 24 * 60 * 60 * 1000))
+    const limitDate = (req.body.entry_date !== undefined) ? new Date(new Date(req.body.entry_date).getTime() - (10 * 24 * 60 * 60 * 1000)) : new Date(new Date().getTime() - (10 * 24 * 60 * 60 * 1000))
     let infected_scans = new Map() //"qrcode_id", [[enter_date, exit_date], [enter_date, exit_date]]
 
+    // Get all QR codes that the positive citizen has scanned in the last 10 days
     Scan
     .find({
         citizen_id: req.body.citizen_id,
@@ -145,12 +145,8 @@ const notifyRisk = (req, res) => {
         if(result.length <= 0) return
 
         let data
-        for(let scan in result){
-            if(scan !== undefined
-                || !scan.hasOwnProperty("qrcode_id")
-                || !scan.hasOwnProperty("qrcode_id")
-                || !scan.hasOwnProperty("entry_date")
-                || !scan.hasOwnProperty("exit_date")) continue
+        for(let i=0; i<result.length; i++){
+            let scan = result[i]
 
             if(infected_scans.has(scan.qrcode_id)) {
                 data = infected_scans.get(scan.qrcode_id)
@@ -159,23 +155,28 @@ const notifyRisk = (req, res) => {
                 data = [[scan.entry_date, scan.exit_date]]
             }
 
-            infected_scans.set(scan.qrcode_id, data)
-            console.log("Added data to infected_scans", scan.qrcode_id, data, infected_scans.get(scan.qrcode_id))
+            infected_scans.set(scan.qrcode_id.toString(), data)
         }
 
+        // Get every citizen that scanned the same QR codes in the past 10 days.
         return Scan.find({
-            qrcode_id: { $in: Array.from(infected_scans.keys())},
-            citizen_id: { $ne: req.body.citizen_id},
-            exit_date: { $gte: limitDate}
+            qrcode_id: { $in: Array.from(infected_scans.keys())},           // All qrcodes that have been scanned by positive citizen
+            citizen_id: { $ne: req.body.citizen_id},                        // that are NOT scanned by that positive citizen
+            entry_date: { $gte: limitDate}                                   // which have been scanned in the past 10 days
         }).exec()
     })
     .then(result => {
-        console.log("All potential victims that scanned a dangerous QR Code", result)
+        let to_notify = new Set()
+        for(let i=0; i<result.length; i++) {
+            const scan = result[i]
+            const qrcodeIdS = scan.qrcode_id.toString()
 
-        //for(victim_id in result)
-        // if(crossedPaths())
+            if(infected_scans.has(qrcodeIdS) && crossedPaths(scan, infected_scans.get(qrcodeIdS)))
+                to_notify.add(scan.citizen_id)
+        }
 
-        res.sendStatus(200)
+        console.log("everyone that got in contact are", to_notify)
+        res.json(to_notify).status(200).end()
     })
     .catch(err => {
         if(process.env.NODE_ENV === "dev") console.error(err)
@@ -184,7 +185,19 @@ const notifyRisk = (req, res) => {
     })
 }
 
-const crossedPaths = (infected_entry, infected_exit, victim_entry, victim_exit) => {
-    //infected_entry || infected_exit between(victim_entry, victim_exit)
+const crossedPaths = (contact_scan, possible_contact_timestamps) => {
+    const contact_entry = contact_scan.entry_date
+    const contact_exit = contact_scan.exit_date
+
+    for(let i=0; i<possible_contact_timestamps.length; i++){
+        const sick_entry = possible_contact_timestamps[i][0]
+        const sick_exit = possible_contact_timestamps[i][1]
+
+        //TODO: if sick_exit null => use entry+avg_time of qrcode
+
+        if((contact_entry.getTime() >= sick_entry.getTime() && contact_entry.getTime() <= sick_exit.getTime()) ||
+            (contact_exit.getTime() >= sick_entry.getTime() && contact_exit.getTime() <= sick_exit.getTime())) return true
+    }
+
     return false;
 }
