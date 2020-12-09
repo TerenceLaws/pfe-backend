@@ -8,10 +8,7 @@ const SALT = 10
  * Return: array of JSON objects representing all db professionals
  */
 exports.professional_list = function (req, res){
-    Professional.find({}).exec().then(result => {
-        for(let i=0; i<result.length; i++){
-            result[i].password = undefined
-        }
+    Professional.find({}).select('-__v -password -_id').exec().then(result => {
         res.json(result).status(200).end()
     })
 }

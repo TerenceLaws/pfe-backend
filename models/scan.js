@@ -8,11 +8,4 @@ const scanSchema = new mongoose.Schema({
     exit_date: {type: Date, default: null}
 })
 
-scanSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        delete returnedObject.__v
-        delete returnedObject._id
-    }
-})
-
 module.exports = mongoose.model('Scan', scanSchema)

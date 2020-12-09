@@ -8,11 +8,4 @@ const locationSchema = new mongoose.Schema({
     avg_time: {type: String, enum: ['15m', '30m', '1h', '2h', '5h']}
 })
 
-locationSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        delete returnedObject.__v
-        delete returnedObject._id
-    }
-})
-
 module.exports = mongoose.model('Location', locationSchema)

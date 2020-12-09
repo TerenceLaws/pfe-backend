@@ -9,11 +9,4 @@ const professionalSchema = new mongoose.Schema({
     is_doctor: {type: Boolean, default: false}
 })
 
-professionalSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        delete returnedObject.__v
-        delete returnedObject._id
-    }
-})
-
 module.exports = mongoose.model('Facility', professionalSchema)
