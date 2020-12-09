@@ -38,14 +38,14 @@ exports.professional_login = function(req, res){
                              for(let i=0; i<result.length; i++){
                                  result[i].password = undefined
                              }
-                             res.status(200).json({
-                                 result:result,
-                                 token : jwt.sign(
-                                     {id : result._id},
+                             res.status(200).json([{
+                                 result: result,
+                                 token: jwt.sign(
+                                     {id: result._id},
                                      "My_secret_jwt_token",
-                                     {expiresIn : '24h'}
-                                     )
-                             })
+                                     {expiresIn: '24h'}
+                                 )
+                             }])
                          }
                     })
                      .catch(err => {
