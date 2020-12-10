@@ -10,9 +10,9 @@ app.use(express.json())
 app.use(logger('tiny', { skip: () => process.env.NODE_ENV === "tests" }))
 app.use(express.static('public'));
 
-app.use(cors({
-    exposedHeaders: ['Content-Length', 'Authorization']
-}))
+app.use(cors())
+app.options('*', cors());
+
 app.use(bodyParser.json())
 
 const citizenRoutes = require("../routes/citizenRouter")

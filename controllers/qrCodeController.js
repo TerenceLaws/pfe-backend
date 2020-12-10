@@ -104,6 +104,8 @@ const logScan = (req, res) => {
     const qrcodeId = req.body.qrcode_id
     const scan_date = (req.body.entry_date !== undefined) ? new Date(req.body.entry_date) : Date.now()
 
+    console.log(scan_date)
+
     Scan.find({
         citizen_id: citizenId,
         qrcode_id: qrcodeId
