@@ -93,7 +93,6 @@ exports.qrcode_scan = function (req, res) {
         if (process.env.NODE_ENV === "dev") console.error(err)
         console.log("GOT AN ERROR IN SCAN!")
         res.sendStatus(500)
-        return
     })
 }
 
@@ -162,7 +161,7 @@ const notifyRisk = (req, res) => {
         return Scan.find({
             qrcode_id: { $in: Array.from(infected_scans.keys())},           // All qrcodes that have been scanned by positive citizen
             citizen_id: { $ne: req.body.citizen_id},                        // that are NOT scanned by that positive citizen
-            entry_date: { $gte: limitDate}                                   // which have been scanned in the past 10 days
+            entry_date: { $gte: limitDate}                                  // which have been scanned in the past 10 days
         }).exec()
     })
     .then(result => {
@@ -171,7 +170,7 @@ const notifyRisk = (req, res) => {
             const scan = result[i]
             const qrcodeIdS = scan.qrcode_id.toString()
 
-            if(infected_scans.has(qrcodeIdS) && crossedPaths(scan, infected_scans.get(qrcodeIdS)))
+            if(infected_scans.has(qrcodeIdS) && crossedPaths(scan, infected_scans.get(qrcodeIdS), req.body.id))
                 to_notify.add(scan.citizen_id)
         }
 
@@ -186,18 +185,16 @@ const notifyRisk = (req, res) => {
     })
 }
 
-const crossedPaths = (contact_scan, possible_contact_timestamps) => {
+const crossedPaths = (contact_scan, possible_contact_timestamps, scan_sick_id) => {
     const contact_entry = contact_scan.entry_date
     const contact_exit = contact_scan.exit_date
 
     for(let i=0; i<possible_contact_timestamps.length; i++){
         const sick_entry = possible_contact_timestamps[i][0]
-        const sick_exit = possible_contact_timestamps[i][1]
+        let sick_exit = possible_contact_timestamps[i][1]
 
-        //TODO: if sick_exit null => use entry+avg_time of qrcode
-
-        if((contact_entry.getTime() >= sick_entry.getTime() && contact_entry.getTime() <= sick_exit.getTime()) ||
-            (contact_exit.getTime() >= sick_entry.getTime() && contact_exit.getTime() <= sick_exit.getTime())) return true
+        if(contact_entry && (contact_entry.getTime() >= sick_entry.getTime() && contact_entry.getTime() <= sick_exit.getTime())
+            || contact_exit && (contact_exit.getTime() >= sick_entry.getTime() && contact_exit.getTime() <= sick_exit.getTime())) return true
     }
 
     return false;
