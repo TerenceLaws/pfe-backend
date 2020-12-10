@@ -58,7 +58,7 @@ exports.notify = function(citizen_id){
                 //     body: 'you have come into contact with a sick person it is better to stay at home.',
                 // })
 
-                webPush.sendNotification(subscription, 'You have come into contact with a sick person it is better to stay at home.')
+                webPush.sendNotification(JSON.parse(subscription), 'You have come into contact with a sick person it is better to stay at home.')
                     .then(result => console.log(result))
                     .catch(e => console.log(e.stack))
             }
