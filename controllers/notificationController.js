@@ -32,7 +32,7 @@ exports.subscribe = function (req, res){
     //     title: 'Hello!',
     //     body: 'It works.',
     // }
-
+//
     //const jsonPayload = JSON.parse(payload)
 
     webPush.sendNotification(jsonSub,'it works')
