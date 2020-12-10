@@ -5,6 +5,7 @@ require('dotenv').config()
 const app = express()
 app.use(express.json())
 app.use(logger('tiny', { skip: () => process.env.NODE_ENV === "tests" }))
+app.use(express.static('public'));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -12,9 +13,7 @@ app.use((req, res, next) => {
     // authorized headers for preflight requests
     // https://developer.mozilla.org/en-US/docs/Glossary/preflight_request
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept,authorization');
-
     next();
-
 
     app.options('*', (req, res) => {
         // allowed XHR methods
