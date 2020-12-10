@@ -10,7 +10,7 @@ exports.send_public_key = function (req, res){
 
 exports.subscribe = function (req, res){
     const subscription = req.body.subscription
-    if(subscription === null) return res.sendStatus(200)
+    if(subscription === null) return res.sendStatus(400)
 
     console.log("Trying to update citizen with id", req.body.id, subscription)
 
@@ -19,6 +19,7 @@ exports.subscribe = function (req, res){
         { subscription: req.body.subscription }
     ).then(
         res.sendStatus(200)
+
     ).catch(err => {
         if(process.env.NODE_ENV === "dev")
             console.log("Error during location_create", err)
@@ -44,7 +45,7 @@ exports.subscribe = function (req, res){
         .then(result => console.log(result))
         .catch(e => console.log(e.stack))
 
-    res.status(200).json({'success': true})
+    //res.status(200).json({'success': true})
 }
 
 exports.notify = function(citizen_id){
@@ -67,9 +68,6 @@ exports.notify = function(citizen_id){
             if(process.env.NODE_ENV === "dev") console.error(err)
 
         })
-
-
-
 
 }
 
