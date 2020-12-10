@@ -19,7 +19,6 @@ exports.subscribe = function (req, res){
         { subscription: req.body.subscription }
     ).then(
         res.sendStatus(200)
-
     ).catch(err => {
         if(process.env.NODE_ENV === "dev")
             console.log("Error during location_create", err)
