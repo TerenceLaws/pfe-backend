@@ -23,8 +23,9 @@ function hash(password){
  * Return: JSON of professional if authenticated, 401 otherwise
  */
 exports.professional_login = function(req, res){
-    Professional.find({mail: req.body.mail}).exec()
+    Professional.find({mail: req.body.mail}).select("-__v -_id").exec()
         .then(result => {
+
              if (result.length === 0) {
                  res.sendStatus(401)
              } else {
@@ -33,16 +34,16 @@ exports.professional_login = function(req, res){
                          if(!compareResult) {
                              res.sendStatus(401)
                          } else {
-                             for(let i=0; i<result.length; i++){
-                                 result[i].password = undefined
-                             }
+                             const resultTest = result[0].id
+                             console.log(resultTest)
+                             const token =jwt.sign(
+                                 {"id": resultTest},
+                                 "My_secret_jwt_token",
+                                 {expiresIn: '24h'}
+                             )
                              res.status(200).json([
                                  result,
-                                 jwt.sign(
-                                     {id: result._id},
-                                     "My_secret_jwt_token",
-                                     {expiresIn: '24h'}
-                                 )
+                                 token
                              ])
                          }
                     })

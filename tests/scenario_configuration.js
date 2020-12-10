@@ -73,14 +73,14 @@ const locations = [
         facility_id: professionals[0].id,
         name: "Local 27",
         description: "Le fameux local 27 de l'IPL.",
-        avg_time: "1h"
+        max_time: "2h"
     }),
     new FacilityLocation({
         id: mongoose.Types.ObjectId(),
         facility_id: professionals[0].id,
         name: "Local 28",
         description: "Le petit local 28 de l'IPL.",
-        avg_time: "2h"
+        max_time: "5h"
     })
 ]
 
@@ -98,7 +98,7 @@ const qrcodes = [
     new QRCode({
         id: mongoose.Types.ObjectId(),
         doctor_id: null,
-        location_id: locations[0].id
+        location_id: locations[1].id
     })
 ]
 

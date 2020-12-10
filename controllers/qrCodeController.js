@@ -95,7 +95,6 @@ exports.qrcode_scan = function (req, res) {
         if (process.env.NODE_ENV === "dev") console.error(err)
         console.log("GOT AN ERROR IN SCAN!")
         res.sendStatus(500)
-        return
     })
 }
 
@@ -109,27 +108,48 @@ const logScan = (req, res) => {
         qrcode_id: qrcodeId
     })
     .sort("exit_date")
-    .limit(1)
     .exec()
-    .then(result => {
-        if (result.length !== 0)
-            if (!result[0].hasOwnProperty("exit_date") || result[0].exit_date === null)
-                return Scan.updateOne({id: result[0].id}, {exit_date: scan_date})
+    .then(lastScan => {
+        QRCode.find({id: qrcodeId}).exec().then(result => {
+            Location.find({id: result[0].location_id}).exec().then(result => {
+                const default_exit = addEnumToDate(scan_date, result[0].max_time)
 
-        return new Scan({
-            id: req.body.id || mongoose.Types.ObjectId(),
-            citizen_id: citizenId,
-            qrcode_id: qrcodeId,
-            entry_date: scan_date
-        }).save()
+                // Only update exit_time if lastScan date is BEFORE maxTimeAllowed
+                if (lastScan.length !== 0 && scan_date < default_exit)
+                    return Scan.updateOne({id: lastScan[0].id}, {exit_date: scan_date})
+
+                return new Scan({
+                    id: req.body.id || mongoose.Types.ObjectId(),
+                    citizen_id: citizenId,
+                    qrcode_id: qrcodeId,
+                    entry_date: scan_date,
+                    exit_date: default_exit
+                }).save()
+            })
+        })
     })
     .then(() => {
         res.sendStatus(200)
     })
     .catch(err => {
-        if(process.env.NODE_ENV === "dev") console.error(err)
+        if (process.env.NODE_ENV === "dev") console.error(err)
         res.sendStatus(500)
     })
+}
+
+const addEnumToDate = (date, value) => {
+    switch(value){
+        case "15m":
+            return new Date(date.getTime() + 900000)
+        case "30m":
+            return new Date(date.getTime() + 1800000)
+        case "1h":
+            return new Date(date.getTime() + 3600000)
+        case "2h":
+            return new Date(date.getTime() + 7200000)
+        case "5h":
+            return new Date(date.getTime() + 18000000)
+    }
 }
 
 const notifyRisk = (req, res) => {
@@ -164,10 +184,12 @@ const notifyRisk = (req, res) => {
         return Scan.find({
             qrcode_id: { $in: Array.from(infected_scans.keys())},           // All qrcodes that have been scanned by positive citizen
             citizen_id: { $ne: req.body.citizen_id},                        // that are NOT scanned by that positive citizen
-            entry_date: { $gte: limitDate}                                   // which have been scanned in the past 10 days
+            entry_date: { $gte: limitDate}                                  // which have been scanned in the past 10 days
         }).exec()
     })
     .then(result => {
+        if(result === undefined) return res.status(200).end()
+
         let to_notify = new Set()
         for(let i=0; i<result.length; i++) {
             const scan = result[i]
@@ -204,12 +226,12 @@ const crossedPaths = (contact_scan, possible_contact_timestamps) => {
 
     for(let i=0; i<possible_contact_timestamps.length; i++){
         const sick_entry = possible_contact_timestamps[i][0]
-        const sick_exit = possible_contact_timestamps[i][1]
+        let sick_exit = possible_contact_timestamps[i][1]
 
-        //TODO: if sick_exit null => use entry+avg_time of qrcode
+        // if sick_exit is null, sick_entry + max_time
 
-        if((contact_entry.getTime() >= sick_entry.getTime() && contact_entry.getTime() <= sick_exit.getTime()) ||
-            (contact_exit.getTime() >= sick_entry.getTime() && contact_exit.getTime() <= sick_exit.getTime())) return true
+        if(contact_entry && (contact_entry.getTime() >= sick_entry.getTime() && contact_entry.getTime() <= sick_exit.getTime())
+            || contact_exit && (contact_exit.getTime() >= sick_entry.getTime() && contact_exit.getTime() <= sick_exit.getTime())) return true
     }
 
     return false;
