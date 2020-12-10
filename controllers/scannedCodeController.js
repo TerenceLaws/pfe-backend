@@ -5,14 +5,14 @@ const Scan = require("../models/scan")
  * Return: array of JSON objects representing all db scanned codes
  */
 exports.scanned_code_list = function (req, res){
-    Scan.find({})
-        .then(result => {
-            res.json(result).status(200).end()
-        })
-        .catch(err => {
-            if(process.env.NODE_ENV === "dev") console.error(err)
-            res.sendStatus(500)
-        })
+    Scan.find({}).exec()
+    .then(result => {
+        res.json(result).status(200).end()
+    })
+    .catch(err => {
+        if(process.env.NODE_ENV === "dev") console.error(err)
+        res.sendStatus(500)
+    })
 }
 
 // Deprecated function. Note this in Rapport, as it was a good idea. -Jess

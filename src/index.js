@@ -2,11 +2,19 @@ const express = require("express")
 const logger = require("morgan")
 require('dotenv').config()
 
+const bodyParser = require('body-parser')
+const cors = require('cors')
+
+
+
+
 const app = express()
 app.use(express.json())
 app.use(logger('tiny', { skip: () => process.env.NODE_ENV === "tests" }))
 app.use(express.static('public'));
 
+app.use(cors())
+app.use(bodyParser.json())
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
 
@@ -27,8 +35,9 @@ const professionalRoutes = require("../routes/professionalRouter")
 const facilityLocationRoutes = require("../routes/facilityLocationRouter")
 const qrCodeRoutes = require("../routes/qrCodeRouter")
 const scannedCodeRoutes = require("../routes/scannedCodeRouter")
+const notificationRoutes = require("../routes/notificationRouter")
 
-app.use(citizenRoutes, professionalRoutes, qrCodeRoutes, scannedCodeRoutes)
+app.use(citizenRoutes, professionalRoutes, qrCodeRoutes, scannedCodeRoutes, notificationRoutes)
 app.use("/professionals", facilityLocationRoutes)
 
 app.get("/", function (req, res) {
