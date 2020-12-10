@@ -10,6 +10,10 @@ exports.send_public_key = function (req, res){
 
 exports.subscribe = function (req, res){
     const subscription = req.body.subscription
+    if(subscription === null) return res.sendStatus(200)
+
+    console.log("Trying to update citizen with id", req.body.id, subscription)
+
     Citizen.updateOne(
         { id: req.body.id ,
          subscription: req.body.subscription }
