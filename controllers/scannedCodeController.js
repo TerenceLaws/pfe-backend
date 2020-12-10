@@ -1,7 +1,4 @@
 const Scan = require("../models/scan")
-const QRCode = require("../models/qrCode")
-const Location = require("../models/location")
-const schedule = require('node-schedule')
 
 /*
  * scanned_code_list returns all scanned codes in db
