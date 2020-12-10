@@ -14,3 +14,4 @@ exports.scanned_code_list = function (req, res){
         res.sendStatus(500)
     })
 }
+

@@ -1,7 +1,9 @@
+
 const QRCode = require("../models/qrCode")
 const Location = require("../models/location")
 const Scan = require("../models/scan")
 const mongoose = require("mongoose")
+const notification_controller = require("./notificationController")
 
 /*
  * qr_code_list returns all qr codes in db
@@ -173,9 +175,19 @@ const notifyRisk = (req, res) => {
 
             if(infected_scans.has(qrcodeIdS) && crossedPaths(scan, infected_scans.get(qrcodeIdS)))
                 to_notify.add(scan.citizen_id)
+
         }
 
         // TODO: SEND NOTIFICATION TO ALL CITIZENS W/ID IN to_notify
+        to_notify.forEach(citizen_id =>  notification_controller.notify(citizen_id));
+
+
+
+
+
+
+
+
 
         res.status(200).end()
     })
