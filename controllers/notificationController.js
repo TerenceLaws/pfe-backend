@@ -1,7 +1,7 @@
 const Citizen = require("../models/citizen")
 const webPush = require("web-push")
 
-webPush.setVapidDetails(process.env.WEB_PUSH_CONTACT,process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY)
+webPush.setVapidDetails(process.env.WEB_PUSH_CONTACT || null,process.env.PUBLIC_VAPID_KEY || null, process.env.PRIVATE_VAPID_KEY || null)
 
 exports.send_public_key = function (req, res){
     res.status(200).json({'publicKey':process.env.PUBLIC_VAPID_KEY}).end()
