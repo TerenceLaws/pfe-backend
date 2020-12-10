@@ -193,6 +193,8 @@ const crossedPaths = (contact_scan, possible_contact_timestamps, scan_sick_id) =
         const sick_entry = possible_contact_timestamps[i][0]
         let sick_exit = possible_contact_timestamps[i][1]
 
+        // if sick_exit is null, sick_entry + max_time
+
         if(contact_entry && (contact_entry.getTime() >= sick_entry.getTime() && contact_entry.getTime() <= sick_exit.getTime())
             || contact_exit && (contact_exit.getTime() >= sick_entry.getTime() && contact_exit.getTime() <= sick_exit.getTime())) return true
     }
