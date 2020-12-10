@@ -1,9 +1,10 @@
-
 const QRCode = require("../models/qrCode")
 const Location = require("../models/location")
 const Scan = require("../models/scan")
 const mongoose = require("mongoose")
 const notification_controller = require("./notificationController")
+
+require('dotenv').config()
 
 /*
  * qr_code_list returns all qr codes in db
@@ -200,16 +201,8 @@ const notifyRisk = (req, res) => {
 
         }
 
-        // TODO: SEND NOTIFICATION TO ALL CITIZENS W/ID IN to_notify
-        to_notify.forEach(citizen_id =>  notification_controller.notify(citizen_id));
-
-
-
-
-
-
-
-
+        if(process.env.NODE_ENV !== "tests")
+            to_notify.forEach(citizen_id =>  notification_controller.notify(citizen_id));
 
         res.status(200).end()
     })
