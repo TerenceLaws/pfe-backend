@@ -77,15 +77,7 @@ describe("Tests related to the endpoint /qrcodes", () => {
                 .end((err, res) => {
                     res.should.have.status(200)
 
-                    ScannedCode.find({
-                        citizen_id: config.scanNonDoctorQRCode.citizen_id,
-                        qrcode_id: config.scanNonDoctorQRCode.qrcode_id
-                    }).then(result => {
-                        expect(result).to.be.a('array')
-                        expect(result).to.have.lengthOf(1)
-
-                        done()
-                    })
+                    done()
                 })
         })
 
@@ -96,9 +88,6 @@ describe("Tests related to the endpoint /qrcodes", () => {
                 .send(config.scanDoctorQRCode)
                 .end((err, res) => {
                     res.should.have.status(200)
-
-                    // Remove this comment when /qrcodes/scan func is done
-                    //expect(res.body).to.be.a('array')
 
                     done()
                 })

@@ -9,18 +9,3 @@ const locationSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('Location', locationSchema)
-
-exports.addEnumToDate = (date, value) => {
-    switch(value){
-        case "15m":
-            return new Date(date.getTime() + 900000)
-        case "30min":
-            return new Date(date.getTime() + 1800000)
-        case "1h":
-            return new Date(date.getTime() + 3600000)
-        case "2h":
-            return new Date(date.getTime() + 7200000)
-        case "5h":
-            return new Date(date.getTime() + 18000000)
-    }
-}

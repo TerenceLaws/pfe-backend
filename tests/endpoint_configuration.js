@@ -65,21 +65,21 @@ const testLocations = [
         facility_id: testProfessionals[0].id,
         name: "Location Alpha",
         description: "Description for Location Alpha",
-        avg_time: "1h"
+        max_time: "1h"
     }),
     new FacilityLocation({
         id: mongoose.Types.ObjectId(),
         facility_id: testProfessionals[0].id,
         name: "Location Zulu",
         description: "Description for Location Zulu",
-        avg_time: "2h"
+        max_time: "2h"
     })
 ]
 const testAddLocation = {
     facility_id: testProfessionals[0].id,
     name: "Location Hotel",
     description: "Description for Location Hotel",
-    interval: "5h"
+    max_time: "5h"
 }
 
 // QRCode-related Config

@@ -108,25 +108,47 @@ const logScan = (req, res) => {
     .sort("exit_date")
     .limit(1)
     .exec()
-    .then(result => {
-        if (result.length !== 0)
-            if (!result[0].hasOwnProperty("exit_date") || result[0].exit_date === null)
-                return Scan.updateOne({id: result[0].id}, {exit_date: scan_date})
+    .then(lastScan => {
+        QRCode.find({id: qrcodeId}).exec().then(result => {
+            Location.find({id: result[0].location_id}).exec().then(result => {
+                const default_exit = addEnumToDate(scan_date, result[0].max_time)
 
-        return new Scan({
-            id: req.body.id || mongoose.Types.ObjectId(),
-            citizen_id: citizenId,
-            qrcode_id: qrcodeId,
-            entry_date: scan_date
-        }).save()
+                // Only update exit_time if lastScan date is BEFORE maxTimeAllowed
+                if (lastScan.length !== 0 && lastScan[0].exit_date.getTime() < default_exit)
+                    return Scan.updateOne({id: result[0].id}, {exit_date: scan_date})
+
+                return new Scan({
+                    id: req.body.id || mongoose.Types.ObjectId(),
+                    citizen_id: citizenId,
+                    qrcode_id: qrcodeId,
+                    entry_date: scan_date,
+                    exit_date: default_exit
+                }).save()
+            })
+        })
     })
     .then(() => {
         res.sendStatus(200)
     })
     .catch(err => {
-        if(process.env.NODE_ENV === "dev") console.error(err)
+        if (process.env.NODE_ENV === "dev") console.error(err)
         res.sendStatus(500)
     })
+}
+
+const addEnumToDate = (date, value) => {
+    switch(value){
+        case "15m":
+            return new Date(date.getTime() + 900000)
+        case "30m":
+            return new Date(date.getTime() + 1800000)
+        case "1h":
+            return new Date(date.getTime() + 3600000)
+        case "2h":
+            return new Date(date.getTime() + 7200000)
+        case "5h":
+            return new Date(date.getTime() + 18000000)
+    }
 }
 
 const notifyRisk = (req, res) => {
@@ -165,6 +187,8 @@ const notifyRisk = (req, res) => {
         }).exec()
     })
     .then(result => {
+        if(result === undefined) return res.status(200).end()
+
         let to_notify = new Set()
         for(let i=0; i<result.length; i++) {
             const scan = result[i]
