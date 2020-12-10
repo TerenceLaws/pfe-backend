@@ -18,8 +18,9 @@ exports.scanned_code_list = function (req, res){
         })
 }
 
+// Deprecated function. Note this in Rapport, as it was a good idea. -Jess
+/*
 let updateExitDatesMidnight = schedule.scheduleJob('0 0 * * *', () => {
-
     // Get all scanned codes to check if there are some without an exit date to update it
     Scan.find({}).exec().then(scans => {
         for(let i = 0; i < scans.length(); i++) {
@@ -53,4 +54,5 @@ let updateExitDatesMidnight = schedule.scheduleJob('0 0 * * *', () => {
         if(process.env.NODE_ENV === "dev") console.error(err)
     })
 })
+*/
 
