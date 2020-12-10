@@ -15,8 +15,8 @@ exports.subscribe = function (req, res){
     console.log("Trying to update citizen with id", req.body.id, subscription)
 
     Citizen.updateOne(
-        { id: req.body.id ,
-         subscription: req.body.subscription }
+        { id: req.body.id },
+        { subscription: req.body.subscription }
     ).then(
         res.sendStatus(200)
     ).catch(err => {
