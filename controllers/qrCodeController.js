@@ -106,7 +106,6 @@ const logScan = (req, res) => {
         qrcode_id: qrcodeId
     })
     .sort("exit_date")
-    .limit(1)
     .exec()
     .then(lastScan => {
         QRCode.find({id: qrcodeId}).exec().then(result => {
@@ -114,8 +113,8 @@ const logScan = (req, res) => {
                 const default_exit = addEnumToDate(scan_date, result[0].max_time)
 
                 // Only update exit_time if lastScan date is BEFORE maxTimeAllowed
-                if (lastScan.length !== 0 && lastScan[0].exit_date.getTime() < default_exit)
-                    return Scan.updateOne({id: result[0].id}, {exit_date: scan_date})
+                if (lastScan.length !== 0 && scan_date < default_exit)
+                    return Scan.updateOne({id: lastScan[0].id}, {exit_date: scan_date})
 
                 return new Scan({
                     id: req.body.id || mongoose.Types.ObjectId(),
@@ -194,7 +193,7 @@ const notifyRisk = (req, res) => {
             const scan = result[i]
             const qrcodeIdS = scan.qrcode_id.toString()
 
-            if(infected_scans.has(qrcodeIdS) && crossedPaths(scan, infected_scans.get(qrcodeIdS), req.body.id))
+            if(infected_scans.has(qrcodeIdS) && crossedPaths(scan, infected_scans.get(qrcodeIdS)))
                 to_notify.add(scan.citizen_id)
         }
 
@@ -209,7 +208,7 @@ const notifyRisk = (req, res) => {
     })
 }
 
-const crossedPaths = (contact_scan, possible_contact_timestamps, scan_sick_id) => {
+const crossedPaths = (contact_scan, possible_contact_timestamps) => {
     const contact_entry = contact_scan.entry_date
     const contact_exit = contact_scan.exit_date
 
