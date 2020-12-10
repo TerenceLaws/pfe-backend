@@ -1,12 +1,11 @@
 const Citizen = require("../models/citizen")
 const webPush = require("web-push")
-
-if(process.env.NODE_ENV === "tests") return
+require('dotenv').config()
 
 webPush.setVapidDetails(process.env.WEB_PUSH_CONTACT,process.env.PUBLIC_VAPID_KEY, process.env.PRIVATE_VAPID_KEY)
 
 exports.send_public_key = function (req, res){
-    res.status(200).json({'publicKey':process.env.PUBLIC_VAPID_KEY}).end()
+    res.json({'publicKey': process.env.PUBLIC_VAPID_KEY}).status(200).end()
 }
 
 exports.subscribe = function (req, res){
